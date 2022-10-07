@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_jugadores"
+            android:icon="@drawable/ic_launcher"
+            android:title="Jugadores" />
+        <item
+            android:id="@+id/nav_albitros"
+            android:icon="@drawable/ic_backspace_black_24dp"
+            android:title="Albitros" />
+        <item
+            android:id="@+id/nav_jornadas"
+            android:icon="@drawable/ic_launcher"
+            android:title= "Jornadas" />
+    </group>
+
+    <item android:title="Administrador">
+        <menu>
+            <item
+                android:id="@+id/nav_cerrar"
+                android:icon="@drawable/close"
+                android:title="Cerrar Sesión" />
+
+        </menu>
+    </item>
+
+    <item android:title="Desarrollo">
+        <menu>
+            <item
+
+                android:title="Versión 0.0.001" />
+
+        </menu>
+    </item>
+</menu>
