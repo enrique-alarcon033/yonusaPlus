@@ -20,6 +20,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercaspaniagua.R;
 import com.yonusa.cercaspaniagua.api.ApiManager;
+import com.yonusa.cercaspaniagua.ui.createAccount.view.Activar_cuenta;
 import com.yonusa.cercaspaniagua.ui.createAccount.view.Create_Account_Activity;
 import com.yonusa.cercaspaniagua.utilities.Validations;
 
@@ -161,7 +162,7 @@ public class CrearCuenta extends AppCompatActivity {
         AsyncHttpClient oHttpClient = new AsyncHttpClient();
         //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/paniagua/instalador/api/v1/instaladores",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                "http://payonusa.com/paniagua/usuario/api/v1/usuarios",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {
@@ -237,7 +238,7 @@ public class CrearCuenta extends AppCompatActivity {
         AsyncHttpClient oHttpClient = new AsyncHttpClient();
         //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/paniagua/instalador/api/v1/SolicitarCodigoActivacion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                "http://payonusa.com/paniagua/usuario/api/v1/SolicitarCodigoActivacion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {

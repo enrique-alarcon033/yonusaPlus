@@ -23,7 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.createAccount.create.Activar_cuenta"></activity>
         <activity android:name=".ui.createAccount.create.CrearCuenta" />
         <activity android:name=".ui.password_recovery.Recovery_two" />
         <activity android:name=".ui.password_recovery.Recovery_one" />
@@ -70,7 +69,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.homeScreen.view.HomeActivity"
-            android:noHistory="true"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.add_devices.list_of_devices.AddANewDeviceActivity"

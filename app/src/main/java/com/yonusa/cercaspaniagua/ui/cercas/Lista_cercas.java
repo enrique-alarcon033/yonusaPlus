@@ -344,7 +344,7 @@ return true;
         AsyncHttpClient oHttpClient = new AsyncHttpClient();
      //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/instaladores/api/v1/CerrarSesion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                "http://payonusa.com/paniagua/usuario/api/v1/CerrarSesion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {

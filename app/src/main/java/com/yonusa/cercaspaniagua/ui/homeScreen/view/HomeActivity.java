@@ -20,11 +20,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercaspaniagua.R;
 import com.yonusa.cercaspaniagua.api.ApiConstants;
 import com.yonusa.cercaspaniagua.api.ApiManager;
 import com.yonusa.cercaspaniagua.api.BaseResponse;
 import com.yonusa.cercaspaniagua.ui.add_devices.list_of_devices.AddANewDeviceActivity;
+import com.yonusa.cercaspaniagua.ui.cercas.modelo.cercas_model_completo;
 import com.yonusa.cercaspaniagua.ui.device_control.view.DeviceControlActivity;
 import com.yonusa.cercaspaniagua.ui.homeScreen.adapters.Adapter_HomeScreen_Items;
 import com.yonusa.cercaspaniagua.ui.homeScreen.models.request.ChangeDeviceNameRequest;
@@ -33,6 +37,7 @@ import com.yonusa.cercaspaniagua.ui.homeScreen.models.request.HomeScreenRequest;
 import com.yonusa.cercaspaniagua.ui.homeScreen.models.response.Cerca;
 import com.yonusa.cercaspaniagua.ui.homeScreen.models.response.HomeScreenResponse;
 import com.yonusa.cercaspaniagua.ui.login.view.LogInActivity;
+import com.yonusa.cercaspaniagua.ui.login.view.Loguin_new;
 import com.yonusa.cercaspaniagua.utilities.catalogs.Constants;
 import com.yonusa.cercaspaniagua.utilities.catalogs.ErrorCodes;
 import com.yonusa.cercaspaniagua.utilities.catalogs.SP_Dictionary;
@@ -49,10 +54,18 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,12 +99,20 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         setTitle("Home Screen Yonusa");
 
         iv_AddDevices = findViewById(R.id.iv_add_devices);
-        iv_AddDevices.setVisibility(View.VISIBLE);
+        iv_AddDevices.setVisibility(View.GONE);
         iv_AddDevices.setOnClickListener(v -> toAddDevices());
 
         iv_CloseSession = findViewById(R.id.iv_close_session);
         iv_CloseSession.setVisibility(View.VISIBLE);
-        iv_CloseSession.setOnClickListener(v -> toCloseSession());
+        iv_CloseSession.setOnClickListener(v -> {
+            try {
+                CerrarSesion();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        });
 /*
         Window window = getWindow();
 // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -105,9 +126,9 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 */
         getSupportActionBar().hide();
 
-        SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
-        String userName = prefs.getString(SP_Dictionary.USER_NAME, "No username defined");
-        String userLastName = prefs.getString(SP_Dictionary.USER_LASTNAME, "No userlastName defined");
+        SharedPreferences prefs = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
+        String userName = prefs.getString("nombre", "No username defined");
+        String userLastName = prefs.getString("apellido", "No userlastName defined");
 
         fullName = userName + " " + userLastName;
 
@@ -115,13 +136,13 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         tvFullName.setTypeface(null, Typeface.BOLD);
         tvFullName.setText(fullName);
 
-        String email = prefs.getString(SP_Dictionary.USER_EMAIL, "No email defined");
+        String email = prefs.getString("email", "No email defined");
 
         TextView tvEmail = findViewById(R.id.tv_userEmail);
         tvEmail.setTypeface(null, Typeface.NORMAL);
         tvEmail.setText(email);
 
-        userId = prefs.getString(SP_Dictionary.USER_ID, "No user id definded");
+        userId = prefs.getString("usuarioId", "No user id definded");
 
 
     }
@@ -216,12 +237,14 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
         mAdapter.setOnItemClickListener(position -> goToDeviceControl(deviceList, position));
 
-        SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
 
-        String mqttHost = prefs.getString(SP_Dictionary.MQTT_SERVER, "");
-        String mqttPort = prefs.getString(SP_Dictionary.MQTT_PORT, "");
-        String mqttPass = prefs.getString(SP_Dictionary.MQTT_PASS, "");
-        String mqttUser = prefs.getString(SP_Dictionary.MQTT_USER, "");
+        String mqttHost = prefs.getString("MQTT_SERVER", "");
+        String mqttPort = prefs.getString("MQTT_PORT", "");
+        String mqttPass = prefs.getString("MQTT_PWD", "");
+        String mqttUser = prefs.getString("MQTT_USER", "");
+
+       // Toast.makeText(HomeActivity.this, "host:"+mqttHost+"puerto:"+mqttPort+"pass:"+mqttPass+"user:"+mqttUser, Toast.LENGTH_SHORT).show();
         if (mqttHost.isEmpty() || mqttPort.isEmpty() || mqttPass.isEmpty() || mqttUser.isEmpty())
             return;
         setMqttClient(mqttHost, mqttPort, mqttUser, mqttPass, userId);
@@ -311,6 +334,98 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
 
         //FIXME: Arreglar la petición para cerrar sesión y para regresar al Home Screen
+    }
+
+    public boolean CerrarSesion() throws JSONException, UnsupportedEncodingException {
+
+        SharedPreferences misPreferencias = getSharedPreferences("User_info", Context.MODE_PRIVATE);
+
+        String id_user = misPreferencias.getString("User_id", "0");
+        String aplicacion = "application/json";
+        JSONObject oJSONObject = new JSONObject();
+        oJSONObject.put("usuarioId", id_user);
+        //   oJSONObject.put("coordenates",_contrasena);
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
+
+        //  Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //      oEntity.setContentType("Authorization", "Bearer "+token);
+
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        //cambiar varible
+        RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
+                "http://payonusa.com/paniagua/usuario/api/v1/CerrarSesion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody){
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+                        //     mMap = googleMap;d
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+                            String valor = String.valueOf(obj.get("codigo"));
+
+                            if (valor.equals("0")){
+
+                                SharedPreferences sharedPref2 =getSharedPreferences("Datos_acceso",Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor2 = sharedPref2.edit();
+                                editor2.putString("correo", "");
+                                editor2.putString("password", "");
+                                editor2.putString("recordar","0");
+                                editor2.commit();
+                                Toast.makeText(getApplicationContext(), "Sesión Cerrada", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), Loguin_new.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            if (valor.equals("-2")){
+
+                                Toast.makeText(getApplicationContext(), "El usuario no existe", Toast.LENGTH_LONG).show();
+                            }
+                            // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
     }
 
     private void toAddDevices() {

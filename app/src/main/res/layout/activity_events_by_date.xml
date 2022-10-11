@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_start"
+    android:background="@color/white"
     tools:context=".ui.device_control.view.DeviceControlActivity">
 
     <include
@@ -34,7 +34,7 @@
         android:text="@string/events_by_date_title"
         android:textAlignment="center"
         android:textSize="25sp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:fontFamily=""/>
 
@@ -53,8 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/date_start"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
+            android:textColorHint="@color/negro"
+            android:textColor="@color/negro"
             android:layout_weight="1"
             android:focusable="false"
             android:inputType="date"
@@ -66,8 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/date_end"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
+            android:textColorHint="@color/negro"
+            android:textColor="@color/negro"
             android:layout_weight="1"
             android:focusable="false"
             android:inputType="date"
@@ -85,8 +85,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:textSize="18sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/rounded_login_btn_shape"
+        android:textColor="@color/negro"
+        android:background="@drawable/btn_secundary"
         android:text="@string/search_events_text"
         android:textAllCaps="false"
         android:elevation="1dp"

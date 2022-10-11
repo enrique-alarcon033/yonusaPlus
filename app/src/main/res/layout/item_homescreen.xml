@@ -87,7 +87,7 @@
 
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-
+android:textColor="@color/negro"
             android:text="@string/model_id"
             android:textAlignment="viewStart"
             android:textSize="16sp"
@@ -100,6 +100,7 @@
             android:layout_height="11dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+
             android:layout_toStartOf="@+id/icn_status"
             android:layout_below="@id/tv_model_id"
             android:layout_toEndOf="@id/circle_background"
@@ -109,7 +110,7 @@
 
             android:text="@string/device_status"
             android:textSize="10sp"
-            android:textColor="@color/white"
+            android:textColor="@color/negro"
             android:textStyle="normal"
             android:textAllCaps="false"
 

@@ -4,22 +4,23 @@
     android:id="@+id/cell_user_card"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:background="@color/colorPrimary"
     android:layout_marginVertical="8dp"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/iv_user_list_profile_icn"
             android:background="@color/clear"
-            android:src="@drawable/icn_user"
+            android:src="@drawable/ic_usuario"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:elevation="3dp"
             android:padding="8dp"/>
 
@@ -35,7 +36,7 @@
             android:paddingEnd="8dp"
             android:background="@color/clear"
             android:elevation="3dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp" />
 
@@ -52,7 +53,7 @@
             android:elevation="3dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:textSize="12sp" />
 
     </RelativeLayout>

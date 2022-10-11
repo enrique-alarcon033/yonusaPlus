@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_start">
+    android:background="@color/pseudo_white">
 
 
     <com.airbnb.lottie.LottieAnimationView
@@ -27,7 +27,7 @@
         android:layout_below="@id/top_menu"
         android:layout_marginTop="18sp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:textSize="21sp" />
 
@@ -45,7 +45,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:textSize="16sp"
         android:text="@string/instructions_add_user"
         android:textColorHint="#75ffffff"
@@ -64,12 +64,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/rounded_edit_text_shape"
+        android:background="@drawable/label"
         android:textCursorDrawable="@null"
         android:hint="@string/guest_alias"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:textSize="18sp"
-        android:textColorHint="#75ffffff"
+        android:textColorHint="@color/lightGray"
         android:inputType="textAutoComplete"
         />
 
@@ -86,12 +86,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/rounded_edit_text_shape"
+        android:background="@drawable/label"
         android:textCursorDrawable="@null"
         android:hint="@string/email"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:textSize="18sp"
-        android:textColorHint="#75ffffff"
+        android:textColorHint="@color/lightGray"
         android:inputType="textEmailAddress"
         />
 
@@ -111,7 +111,7 @@
         android:textSize="16sp"
         android:elevation="1dp"
         android:textColor="@color/colorPrimary"
-        android:background="@drawable/rounded_login_btn_shape"/>
+        android:background="@drawable/btn_secundary"/>
 
     <include
         android:id="@+id/top_menu"

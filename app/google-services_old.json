@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "797995510439",
+    "firebase_url": "https://yonusa-push-pro.firebaseio.com",
+    "project_id": "yonusa-push-pro",
+    "storage_bucket": "yonusa-push-pro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797995510439:android:391dc65ef0f6ff2eedc982",
+        "android_client_info": {
+          "package_name": "com.yonusa.cercaspaniagua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797995510439-omuql4iogcn5oi32fmadloo25logqauj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yonusa.cercaspaniagua",
+            "certificate_hash": "dc6b1d53f42726ff3930860db16d8902ba96d595"
+          }
+        },
+        {
+          "client_id": "797995510439-fdngviradpqrvu0996ijif2b7f7jb9d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUUlvW4QuvfRYHkuj9XiCN2gjtlCGAftY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797995510439-fdngviradpqrvu0996ijif2b7f7jb9d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

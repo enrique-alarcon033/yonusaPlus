@@ -11,13 +11,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_start">
+    android:background="@color/pseudo_white">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         app:layout_constraintBottom_toTopOf="@+id/btn_update_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +41,7 @@
                 android:id="@+id/banner_user_info"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:background="@color/colorPrimary"
+                android:background="@color/white"
                 />
 
             <TextView
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textAlignment="center"
-                android:textColor="@color/pseudo_white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -62,7 +61,7 @@
                 android:layout_below="@+id/tv_control_description"
                 android:layout_marginTop="5dp"
                 android:textAlignment="center"
-                android:textColor="@color/pseudo_white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
             <TextView
@@ -72,7 +71,7 @@
                 android:layout_below="@+id/tv_control_name"
                 android:layout_marginTop="5dp"
                 android:textAlignment="center"
-                android:textColor="@color/pseudo_white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
         </RelativeLayout>
@@ -340,6 +339,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:backgroundTint="#FFF"
+        android:visibility="gone"
         android:onClick="onClickSetCurrentDate"
         android:text="Actualizar hora local"
 

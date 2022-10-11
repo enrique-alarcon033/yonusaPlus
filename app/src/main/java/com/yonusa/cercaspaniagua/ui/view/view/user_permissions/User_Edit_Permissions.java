@@ -58,8 +58,8 @@ public class User_Edit_Permissions extends AppCompatActivity {
 
         guestUserName = findViewById(R.id.tv_guestName);
 
-        SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
-        userId = prefs.getString(SP_Dictionary.USER_ID, "No user id definded");
+        SharedPreferences prefs = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
+        userId = prefs.getString("usuarioId", "No user id definded");
 
         deviceId = getIntent().getStringExtra("DEVICE_ID");
         guestUserId = getIntent().getStringExtra("GUEST_USER_ID");

@@ -88,9 +88,9 @@ public class DeviceControlAdapter extends RecyclerView.Adapter<DeviceControlAdap
             case 1: //fence
                 if (control.getEstadoPermiso() && status) {
                     if (control.getEstadoControl()) {
-                        holder.ivControl.setImageResource(R.drawable.fence_on);
+                        holder.ivControl.setImageResource(R.drawable.fence2_on);
                     } else {
-                        holder.ivControl.setImageResource(R.drawable.fence_off);
+                        holder.ivControl.setImageResource(R.drawable.fence2_off);
                     }
                 } else {
                     holder.ivControl.setImageResource(R.drawable.fence_disable);
@@ -104,9 +104,9 @@ public class DeviceControlAdapter extends RecyclerView.Adapter<DeviceControlAdap
             case 2: //panic
                 if (control.getEstadoPermiso() && status) {
                     if (control.getEstadoControl()) {
-                        holder.ivControl.setImageResource(R.drawable.panic_on);
+                        holder.ivControl.setImageResource(R.drawable.panico_on);
                     } else {
-                        holder.ivControl.setImageResource(R.drawable.panic_off);
+                        holder.ivControl.setImageResource(R.drawable.panico_off);
                     }
                 } else {
                     holder.ivControl.setImageResource(R.drawable.panic_disable);
@@ -119,9 +119,9 @@ public class DeviceControlAdapter extends RecyclerView.Adapter<DeviceControlAdap
             case 3: //door
                 if (control.getEstadoPermiso() && status) {
                     if (control.getEstadoControl()) {
-                        holder.ivControl.setImageResource(R.drawable.door_open);
+                        holder.ivControl.setImageResource(R.drawable.puerta_open);
                     } else {
-                        holder.ivControl.setImageResource(R.drawable.door_closed);
+                        holder.ivControl.setImageResource(R.drawable.puerta_close);
 
                     }
                 } else {

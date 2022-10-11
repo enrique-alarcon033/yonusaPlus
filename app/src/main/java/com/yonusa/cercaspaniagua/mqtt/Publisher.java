@@ -22,11 +22,13 @@ public class Publisher {
     SharedPreferences prefs;
 
     public void SendMessage(Context context, final String msn, String mac){
-        prefs = context.getSharedPreferences(SP_Dictionary.USER_INFO,Context.MODE_PRIVATE);
-        String mqttHost = prefs.getString(SP_Dictionary.MQTT_SERVER, "No server defined");
-        String mqttPort = prefs.getString(SP_Dictionary.MQTT_PORT, "No port defined");
-        String mqttPasswrd = prefs.getString(SP_Dictionary.MQTT_PASS, "No password defined");
-        String mqttUser = prefs.getString(SP_Dictionary.MQTT_USER, "No user defined");
+        prefs = context.getSharedPreferences("Datos_usuario",Context.MODE_PRIVATE);
+
+
+        String mqttHost = prefs.getString("MQTT_SERVER", "");
+        String mqttPort = prefs.getString("MQTT_PORT", "");
+        String mqttPasswrd = prefs.getString("MQTT_PWD", "");
+        String mqttUser = prefs.getString("MQTT_USER", "");
         try {
             client = new MqttAndroidClient(context, "tcp://"+mqttHost+":"+mqttPort, clientId);
             MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();

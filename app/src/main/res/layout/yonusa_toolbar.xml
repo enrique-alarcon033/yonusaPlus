@@ -4,7 +4,7 @@
     android:id="@+id/yonusa_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/pseudo_white"
+    android:background="@color/colorPrimary"
     android:elevation="4dp"
     app:contentInsetStartWithNavigation="0dp"
     >
@@ -27,26 +27,26 @@
 
         <ImageView
             android:id="@+id/iv_user_admin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:elevation="5dp"
-            android:src="@drawable/add_user"
+            android:src="@drawable/ic_usuario"
             android:layout_alignParentEnd="true"
             android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"/>
 
         <ImageView
             android:id="@+id/iv_user_configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:elevation="5dp"
-            android:src="@drawable/user_list"
+            android:src="@drawable/ic_lista_user"
             android:layout_alignParentEnd="true"
             android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"/>
@@ -59,7 +59,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:elevation="5dp"
-            android:src="@drawable/ico_log_out"
+            android:src="@drawable/ic_salida"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:visibility="gone"

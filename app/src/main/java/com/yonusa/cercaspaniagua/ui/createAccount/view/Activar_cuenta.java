@@ -83,7 +83,7 @@ public class Activar_cuenta extends AppCompatActivity {
         AsyncHttpClient oHttpClient = new AsyncHttpClient();
         //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/paniagua/instalador/api/v1/ActivarCuentaUsuario",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                "http://payonusa.com/paniagua/usuario/api/v1/ActivarCuentaUsuario",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {

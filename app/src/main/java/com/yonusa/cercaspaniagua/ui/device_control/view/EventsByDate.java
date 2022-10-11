@@ -51,8 +51,8 @@ public class EventsByDate extends AppCompatActivity implements View.OnClickListe
 
         cercaId = getIntent().getStringExtra("DEVICE_ID");
 
-        prefs = getSharedPreferences(SP_Dictionary.USER_INFO, Context.MODE_PRIVATE);
-        userId = prefs.getString(SP_Dictionary.USER_ID, "No userId defined");
+        prefs = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+        userId = prefs.getString("usuarioId", "No userId defined");
 
         startDate = findViewById(R.id.et_date_start);
         startDate.setOnClickListener(this);

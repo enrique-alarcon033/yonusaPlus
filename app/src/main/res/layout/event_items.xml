@@ -3,7 +3,7 @@
     android:id="@+id/cv_events"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/clear"
+    android:background="@color/colorPrimary"
     android:layout_marginVertical="8dp">
 
     <LinearLayout
@@ -15,13 +15,13 @@
         android:layout_margin="10dp">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ico_history"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_calendario"
             android:elevation="3dp"/>
 
         <LinearLayout

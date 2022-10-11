@@ -21,6 +21,7 @@ import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercaspaniagua.R;
 import com.yonusa.cercaspaniagua.ui.cercas.Lista_cercas;
 import com.yonusa.cercaspaniagua.ui.createAccount.create.CrearCuenta;
+import com.yonusa.cercaspaniagua.ui.homeScreen.view.HomeActivity;
 import com.yonusa.cercaspaniagua.ui.password_recovery.Recovery_one;
 
 import org.json.JSONException;
@@ -131,7 +132,7 @@ public class Loguin_new extends AppCompatActivity {
         AsyncHttpClient oHttpClient = new AsyncHttpClient();
          //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/instaladores/api/v1/IniciarSesion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                "http://payonusa.com/paniagua/usuario/api/v1/IniciarSesion",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {
@@ -181,7 +182,7 @@ public class Loguin_new extends AppCompatActivity {
                                     editor2.commit();
                                 }
                                 Toast.makeText(getApplicationContext(), "Loguin Correcto", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getApplicationContext(), Lista_cercas.class);
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 startActivity(intent);
                                 finish();
                             }else{
@@ -192,21 +193,28 @@ public class Loguin_new extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
+                            loader.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            loader.setVisibility(View.GONE);
                         }
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         if (statusCode == 404) {
                             Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                            loader.setVisibility(View.GONE);
                         } else if (statusCode == 500) {
                             Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            loader.setVisibility(View.GONE);
                             //sin_tarjetas();
                         } else if (statusCode == 403) {
                             Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                            loader.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "No ha respondido el servidor, verifica tu conexión a internet", Toast.LENGTH_LONG).show();
+                            loader.setVisibility(View.GONE);
                         }
 
                     }

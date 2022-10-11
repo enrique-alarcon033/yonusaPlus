@@ -5,35 +5,35 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.homeScreen.view.HomeActivity"
-    android:background="@drawable/gradient_start"
+    android:background="@color/pseudo_white"
     android:id="@+id/relative_containerHome">
 
     <View
         android:id="@+id/banner_user_info"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="80dp"
         android:layout_below="@id/top_menu"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/white"/>
 
     <TextView
         android:id="@+id/tv_fullName"
         android:layout_below="@+id/top_menu"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="21sp"
-        android:textColor="@color/pseudo_white"
+        android:textColor="@color/colorPrimary"
         android:textAlignment="center"
         />
 
     <TextView
         android:id="@+id/tv_userEmail"
         android:layout_below="@+id/tv_fullName"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textColor="@color/pseudo_white"
+        android:textColor="@color/colorPrimary"
         android:textAlignment="center"
         />
 

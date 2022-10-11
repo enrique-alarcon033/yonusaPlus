@@ -157,10 +157,10 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                     holder.icn_device.setImageResource(R.drawable.icn_btnvida);
                     break;
                 case (Constants.WI_FI_MODEL_02):
-                    holder.icn_device.setImageResource(R.drawable.ico_fence_enable);
+                    holder.icn_device.setImageResource(R.drawable.ico_energyon);
                     break;
                 case (Constants.WI_FI_MODEL_03):
-                    holder.icn_device.setImageResource(R.drawable.ico_fence_enable);
+                    holder.icn_device.setImageResource(R.drawable.ico_energyon);
                     break;
                 case (Constants.MONITOR_MODEL):
                     holder.icn_device.setImageResource(R.drawable.icon_panel);

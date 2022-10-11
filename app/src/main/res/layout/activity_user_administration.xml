@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.userAdministration.view.view.userList.userAdministration"
-    android:background="@drawable/gradient_start">
+    tools:context=".ui.view.view.userList.userAdministration"
+    android:background="@color/white">
 
     <include
         android:id="@+id/top_menu"
@@ -22,7 +22,7 @@
         android:layout_below="@id/top_menu"
         android:layout_marginTop="18sp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="21sp"
         android:textStyle="bold"
         />
