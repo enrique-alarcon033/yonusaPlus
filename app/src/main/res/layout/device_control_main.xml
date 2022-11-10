@@ -74,16 +74,46 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
+            <ImageView
+                android:id="@+id/historial"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/tv_control_date"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
+                app:srcCompat="@drawable/ic_historial" />
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_rutinas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/recycler_device_control"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="-30dp"
+            android:textColor="@color/privacyPagecolor"
+            android:drawableLeft="@drawable/ic_rutina"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:text="  Mis Rutinas" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_device_control"
             android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/relative_control_description"
             android:background="@color/clear"
             android:padding="8dp"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical" >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
 
         <LinearLayout

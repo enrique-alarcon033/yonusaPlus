@@ -1,8 +1,12 @@
 package com.yonusa.cercaspaniagua.ui.view.view.user_permissions;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,10 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercaspaniagua.R;
 import com.yonusa.cercaspaniagua.api.ApiConstants;
 import com.yonusa.cercaspaniagua.api.ApiManager;
 import com.yonusa.cercaspaniagua.api.BaseResponse;
+import com.yonusa.cercaspaniagua.ui.cercas.modelo.cercas_model_completo;
+import com.yonusa.cercaspaniagua.ui.login.view.Loguin_new;
 import com.yonusa.cercaspaniagua.ui.view.adapter.Adapter_UserPermissions;
 import com.yonusa.cercaspaniagua.ui.view.models.request.get_users_permissions.GetUserPermissionsRequest;
 import com.yonusa.cercaspaniagua.ui.view.models.request.update_permissions.PermisoControles;
@@ -23,9 +32,18 @@ import com.yonusa.cercaspaniagua.ui.view.models.response.GetUserPermissionsRespo
 import com.yonusa.cercaspaniagua.utilities.catalogs.ErrorCodes;
 import com.yonusa.cercaspaniagua.utilities.catalogs.SP_Dictionary;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +63,7 @@ public class User_Edit_Permissions extends AppCompatActivity {
     String userAlias;
     String deviceId;
     String guestUserId;
+    Button eliminar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +83,20 @@ public class User_Edit_Permissions extends AppCompatActivity {
         deviceId = getIntent().getStringExtra("DEVICE_ID");
         guestUserId = getIntent().getStringExtra("GUEST_USER_ID");
         userAlias = getIntent().getStringExtra("GUEST_USER_NAME");
+        eliminar = (Button) findViewById(R.id.eliminar_user);
+
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Eliminar_usuario();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         guestUserName.setText(userAlias);
 
@@ -229,6 +262,90 @@ public class User_Edit_Permissions extends AppCompatActivity {
         });
 
 
+    }
+
+    public boolean Eliminar_usuario() throws JSONException, UnsupportedEncodingException {
+
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+
+        String id_user = misPreferencias.getString("usuarioId", "0");
+       // String id_invitado = misPreferencias.getString("usuarioId", "0");
+       // String id_cerca = misPreferencias.getString("usuarioId", "0");
+        String aplicacion = "application/json";
+        JSONObject oJSONObject = new JSONObject();
+        oJSONObject.put("usuarioAdministradorId", id_user);
+        oJSONObject.put("usuarioInvitadoId", guestUserId);
+        oJSONObject.put("cercaId", deviceId);
+        //   oJSONObject.put("coordenates",_contrasena);
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
+
+        //  Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //      oEntity.setContentType("Authorization", "Bearer "+token);
+
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        //cambiar varible
+        RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
+                "http://payonusa.com/api/EliminarUsuarioCerca",(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody){
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+                        //     mMap = googleMap;d
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+                            String valor = String.valueOf(obj.get("codigo"));
+
+                            if (valor.equals("0")){
+                                Toast.makeText(getApplicationContext(), "Invitado eliminado", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+
+
+                            // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
     }
 
 }

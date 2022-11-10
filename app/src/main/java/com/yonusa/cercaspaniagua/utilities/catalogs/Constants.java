@@ -12,7 +12,7 @@ public class Constants {
     public static final String MONITOR_MODEL= "EYON-PNL01";
 
     public static final String MQTT_LISTENER_HOMESCREEN = "yonusa_movil/";
-    public static final String HUB_NOTIFICATION_ID = "Yon2-NotHub002";
+    public static final String HUB_NOTIFICATION_ID = "PAN1-Not001";
     
     public static final int FENCE_ID = 1;
     public static final int PANIC_ID = 2;

@@ -113,11 +113,12 @@ public class LogInActivity extends AppCompatActivity {
 
                     registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
                     goToHomeScreen();
+                    Toast.makeText(LogInActivity.this, "User 1", Toast.LENGTH_SHORT).show();
 
                 } else {
                     registerWithNotificationHubs();
                     FirebaseCloudMessagingService.createChannelAndHandleNotifications(getApplicationContext());
-
+                    Toast.makeText(LogInActivity.this, "User 2", Toast.LENGTH_SHORT).show();
                     Thread.sleep(400);
 
                     registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
@@ -184,18 +185,20 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
 
-               /* int typeCode = response.body().getCodigo();
+                int typeCode = response.body().getCodigo();
 
                 switch (typeCode) {
                     case (ErrorCodes.SUCCESS):
+                        Toast.makeText(LogInActivity.this, "Dispositivo registrado para notificaciones", Toast.LENGTH_SHORT).show();
                         Log.i(TAG,"Dispositivo registrado para notificaciones.");
                         Log.i(TAG, response.body().getMensaje());
                         break;
                     case (ErrorCodes.FAILURE):
+                        Toast.makeText(LogInActivity.this, "Dispositivo NO registrado para notificaciones", Toast.LENGTH_SHORT).show();
                         Log.e(TAG,"Dispositivo NO registrado para notificaciones.");
                         Log.e(TAG, response.body().getMensaje());
                         break;
-                } */
+                }
             }
 
             @Override

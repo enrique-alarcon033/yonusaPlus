@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,25 +17,43 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercaspaniagua.R;
+import com.yonusa.cercaspaniagua.api.ApiConstants;
+import com.yonusa.cercaspaniagua.api.ApiManager;
+import com.yonusa.cercaspaniagua.api.BaseResponse;
 import com.yonusa.cercaspaniagua.ui.cercas.Lista_cercas;
 import com.yonusa.cercaspaniagua.ui.createAccount.create.CrearCuenta;
 import com.yonusa.cercaspaniagua.ui.homeScreen.view.HomeActivity;
+import com.yonusa.cercaspaniagua.ui.login.models.RegisterNotificationsRequest;
 import com.yonusa.cercaspaniagua.ui.password_recovery.Recovery_one;
+import com.yonusa.cercaspaniagua.utilities.catalogs.Constants;
+import com.yonusa.cercaspaniagua.utilities.catalogs.ErrorCodes;
+import com.yonusa.cercaspaniagua.utilities.catalogs.SP_Dictionary;
+import com.yonusa.cercaspaniagua.utilities.firebaseService.FirebaseCloudMessagingService;
+import com.yonusa.cercaspaniagua.utilities.firebaseService.RegistrationIntentService;
+import com.yonusa.cercaspaniagua.utilities.helpers.SP_Helper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 
 public class Loguin_new extends AppCompatActivity {
 
@@ -48,15 +68,26 @@ public class Loguin_new extends AppCompatActivity {
     private String email;
     private String pass;
     CheckBox recordar;
+    ApiManager apiManager;
+    Context context = this;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    private static final String TAG = LogInActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loguin_new);
 
+        Log.i(TAG, "On ");
         edtEmail = findViewById(R.id.email_editText);
         edtPass = findViewById(R.id.pass_editText);
         loader = findViewById(R.id.loader_loguin);
         btnLogin = findViewById(R.id.login_button);
+
+        SP_Helper sp_helper = new SP_Helper();
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +101,8 @@ public class Loguin_new extends AppCompatActivity {
                 }
             }
         });
+
+
 
         btnCreateAccount = findViewById(R.id.btn_create_account);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +142,55 @@ public class Loguin_new extends AppCompatActivity {
             edtPass.setText(password);
             recordar.setEnabled(true);
             recordar.setChecked(true);
+        }
+
+        //SP_Helper sp_helper = new SP_Helper();
+
+        //Persistencia de sesión
+        try {
+
+            SharedPreferences prefs2 = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
+            String userId = prefs2.getString(SP_Dictionary.USER_ID, "No userId defined");
+
+            if (userId == "No userId defined"){
+                //Si no existe userId se borra la informacion del usuario si existe.
+                sp_helper.cleanUserInfo(context);
+            } else {
+                //Si existe userId guardado se registra el dispositivo para recibir notificaciones y despues se envía directo a Home screen.
+
+                String notificationId = prefs2.getString("FCMtoken", "No notificationId defined");
+              //  String uniqueId = prefs2.getString("UniqueId: ", "No UniqueId defined");
+
+                Log.i(TAG, notificationId);
+                //String uniqueId = "TESTING-UNIQUEID080890";
+              //  uniqueId = md5(uniqueId);
+                String uniqueId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                Log.i(TAG, "Md5 UniqueId" + uniqueId);
+                String registrationID = prefs2.getString("registrationID", "No notificationId defined");
+
+                if (!notificationId.equals("No notificationId defined")) {
+
+                    registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
+                    //goToHomeScreen();
+
+                } else {
+                    registerWithNotificationHubs();
+                    FirebaseCloudMessagingService.createChannelAndHandleNotifications(getApplicationContext());
+
+                    Thread.sleep(400);
+
+                    registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
+                    // goToHomeScreen();
+                    //Toast.makeText(LogInActivity.this, "Restart your application", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+        } catch(Exception e){
+            //Si algo falla en la carga del shared preference no se muestra nada y se permanece en log in.
+            Toast.makeText(Loguin_new.this, "User id inexistente", Toast.LENGTH_SHORT).show();
+
         }
 
     }
@@ -181,7 +263,64 @@ public class Loguin_new extends AppCompatActivity {
                                     editor2.putString("recordar","0");
                                     editor2.commit();
                                 }
-                                Toast.makeText(getApplicationContext(), "Loguin Correcto", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Log in Correcto", Toast.LENGTH_LONG).show();
+
+                                SP_Helper sp_helper = new SP_Helper();
+                                //Persistencia de sesión
+                                try {
+
+                                    SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
+                                   // String userId = prefs.getString(SP_Dictionary.USER_ID, "No userId defined");
+
+                                    SharedPreferences prefs2 = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
+                                    String userId = prefs2.getString("usuarioId", "No userId defined");
+
+                                    if (userId == "No userId defined"){
+                                        //Si no existe userId se borra la informacion del usuario si existe.
+                                        sp_helper.cleanUserInfo(context);
+                                    } else {
+                                        //Si existe userId guardado se registra el dispositivo para recibir notificaciones y despues se envía directo a Home screen.
+
+                                        String notificationId = prefs.getString("FCMtoken", "No notificationId defined");
+                                   //     String uniqueId = prefs.getString("UniqueId: ", "No UniqueId defined");
+
+                                        Log.i(TAG, notificationId);
+                                        //String uniqueId = "TESTING-UNIQUEID080890";
+                                       // uniqueId = md5(uniqueId);
+                                        String uniqueId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                                        Log.i(TAG, "Md5 UniqueId" + uniqueId);
+                                        String registrationID = prefs.getString("registrationID", "No notificationId defined");
+
+
+                                        SharedPreferences.Editor editor2 = prefs.edit();
+                                        editor2.putString("UniqueId_2", uniqueId);
+                                        editor2.commit();
+
+                                        if (!notificationId.equals("No notificationId defined")) {
+
+                                            registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
+                                          //  goToHomeScreen();
+                                           // Toast.makeText(Loguin_new.this, "User 1", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            registerWithNotificationHubs();
+                                            FirebaseCloudMessagingService.createChannelAndHandleNotifications(getApplicationContext());
+                                           // Toast.makeText(Loguin_new.this, "User 2", Toast.LENGTH_SHORT).show();
+                                            Thread.sleep(400);
+
+                                            registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
+                                           // goToHomeScreen();
+                                            //Toast.makeText(LogInActivity.this, "Restart your application", Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                    }
+
+                                } catch(Exception e){
+                                    //Si algo falla en la carga del shared preference no se muestra nada y se permanece en log in.
+                                    Toast.makeText(Loguin_new.this, "User id inexistente", Toast.LENGTH_SHORT).show();
+
+                                }
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -233,7 +372,6 @@ public class Loguin_new extends AppCompatActivity {
         return false;
     }
 
-
     public void showPassword(){
 
         int pass_length = edtPass.getText().length();
@@ -248,5 +386,92 @@ public class Loguin_new extends AppCompatActivity {
             edtPass.setSelection(pass_length);
         }
 
+    }
+
+    public void registerUserWithDeviceToNotifications(String userId, String notificationsId, String deviceId, String hubNotificationId){
+
+        RegisterNotificationsRequest registerNotificationsRequest= new RegisterNotificationsRequest();
+        registerNotificationsRequest.setUsuarioId(userId);
+        registerNotificationsRequest.setDispositivoId(deviceId);
+        registerNotificationsRequest.setNotificacionesId(notificationsId);
+        registerNotificationsRequest.setHubNotificationId(hubNotificationId);
+
+
+        Log.i(TAG, "NOTIFICATION ID: ------>" + registerNotificationsRequest.getNotificacionesId());
+        Log.i(TAG, "NOTIFICATION DEVICE ID: ------>" + registerNotificationsRequest.getDispositivoId());
+
+        apiManager = ApiConstants.getAPIManager();
+
+        Call<BaseResponse> call = apiManager.postRegisterIdNotification(registerNotificationsRequest);
+
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+
+                int typeCode = response.body().getCodigo();
+
+                switch (typeCode) {
+                    case (ErrorCodes.SUCCESS):
+                    //    Toast.makeText(Loguin_new.this, "Dispositivo registrado para notificaciones"+hubNotificationId, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG,"Dispositivo registrado para notificaciones.");
+                        Log.i(TAG, response.body().getMensaje());
+                        break;
+                    case (ErrorCodes.FAILURE):
+                      //  Toast.makeText(Loguin_new.this, "Dispositivo NO registrado para notificaciones", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG,"Dispositivo NO registrado para notificaciones.");
+                        Log.e(TAG, response.body().getMensaje());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void registerWithNotificationHubs()
+    {
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with FCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    public static final String md5(final String toEncrypt) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("md5");
+            digest.update(toEncrypt.getBytes());
+            final byte[] bytes = digest.digest();
+            final StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(String.format("%02X", bytes[i]));
+            }
+            return sb.toString().toLowerCase();
+        } catch (Exception exc) {
+            return ""; // Impossibru!
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+
+            } else {
+                Log.i(TAG, "This device is not supported by Google Play Services.");
+                Toast.makeText(Loguin_new.this, "This device is not supported by Google Play Services.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

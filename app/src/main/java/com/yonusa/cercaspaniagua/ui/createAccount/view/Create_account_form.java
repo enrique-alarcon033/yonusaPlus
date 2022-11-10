@@ -200,7 +200,7 @@ public class Create_account_form extends Fragment{
             text = getResources().getString(R.string.empty_lastname);
             Toast.makeText(activity,text, Toast.LENGTH_SHORT).show();
             return false;
-        }else if (email.equals("") || !Validations.isValidEmail(email)){
+        }else if (email.equals("")){
             Log.e(TAG, "Email not valid error");
             text = getResources().getString(R.string.enter_valid_email);
             Toast.makeText(activity,text, Toast.LENGTH_SHORT).show();

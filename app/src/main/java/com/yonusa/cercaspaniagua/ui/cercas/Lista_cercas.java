@@ -134,6 +134,7 @@ return true;
             e.printStackTrace();
         }
 
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -458,4 +459,5 @@ return true;
         AlertDialog alertDialog=dialog.create();
         alertDialog.show();
     }
+
 }

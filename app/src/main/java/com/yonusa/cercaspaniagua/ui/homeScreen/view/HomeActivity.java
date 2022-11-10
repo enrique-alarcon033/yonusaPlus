@@ -54,6 +54,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,6 +114,14 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                 e.printStackTrace();
             }
         });
+
+        try {
+            Consultar_suscripcion();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 /*
         Window window = getWindow();
 // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -338,13 +347,19 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
     public boolean CerrarSesion() throws JSONException, UnsupportedEncodingException {
 
-        SharedPreferences misPreferencias = getSharedPreferences("User_info", Context.MODE_PRIVATE);
 
-        String id_user = misPreferencias.getString("User_id", "0");
+        SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
+        String uniqueId = prefs.getString("UniqueId_2", "No UniqueId defined");
+
+        //String uniqueId = "TESTING-UNIQUEID080890";
+      //  uniqueId = md5(uniqueId);
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+
+        String id_user = misPreferencias.getString("usuarioId", "0");
         String aplicacion = "application/json";
         JSONObject oJSONObject = new JSONObject();
         oJSONObject.put("usuarioId", id_user);
-        //   oJSONObject.put("coordenates",_contrasena);
+        oJSONObject.put("dispositivoId",uniqueId);
         ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
         oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
@@ -445,17 +460,46 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
         mqttDisconnect();
 
-        Intent deviceControlIntent = new Intent(HomeActivity.this, DeviceControlActivity.class);
 
-        deviceControlIntent.putExtra("USER_ID", userId);
-        deviceControlIntent.putExtra("USER_ROL", rol);
-        deviceControlIntent.putExtra("MODEL_ID", model);
-        deviceControlIntent.putExtra("DEVICE_ID", deviceId);
-        deviceControlIntent.putExtra("DEVICE_NAME", deviceName);
-        deviceControlIntent.putExtra("DEVICE_MAC", mac);
-        deviceControlIntent.putExtra("DEVICE_STATUS", deviceStatus);
 
-        startActivity(deviceControlIntent);
+
+
+        try {
+            Consultar_Cercas_pagadas(rol,model,mac,deviceId,deviceName,deviceStatus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    /*    SharedPreferences misPreferencias = getSharedPreferences("Suscripcion", Context.MODE_PRIVATE);
+        String active = misPreferencias.getString("active", "0");
+
+        if (active.equals("false")){
+            Toast.makeText(this, "No Cuentas con una suscripción Activa", Toast.LENGTH_SHORT).show();
+        }else{
+
+            String model = deviceList.get(position).getModelo();
+            String deviceId = deviceList.get(position).getCercaId();
+            Integer rol = deviceList.get(position).getRol();
+            String deviceName = deviceList.get(position).getAliasCerca();
+            String mac = deviceList.get(position).getMAC();
+            Boolean deviceStatus = deviceList.get(position).getEstadoConexionAlSistema();
+
+            mqttDisconnect();
+
+            Intent deviceControlIntent = new Intent(HomeActivity.this, DeviceControlActivity.class);
+
+            deviceControlIntent.putExtra("USER_ID", userId);
+            deviceControlIntent.putExtra("USER_ROL", rol);
+            deviceControlIntent.putExtra("MODEL_ID", model);
+            deviceControlIntent.putExtra("DEVICE_ID", deviceId);
+            deviceControlIntent.putExtra("DEVICE_NAME", deviceName);
+            deviceControlIntent.putExtra("DEVICE_MAC", mac);
+            deviceControlIntent.putExtra("DEVICE_STATUS", deviceStatus);
+
+            startActivity(deviceControlIntent);
+        } */
+
     }
 
     private volatile IMqttAsyncClient mqttClient;
@@ -631,5 +675,209 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         }
 
     }
+
+    public boolean Consultar_suscripcion() throws JSONException, UnsupportedEncodingException {
+
+
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+
+        String id_user = misPreferencias.getString("usuarioId", "0");
+        String aplicacion = "application/json";
+        JSONObject oJSONObject = new JSONObject();
+        oJSONObject.put("usuarioId", id_user);
+        //   oJSONObject.put("coordenates",_contrasena);
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
+
+        //  Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //      oEntity.setContentType("Authorization", "Bearer "+token);
+
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        //cambiar varible
+        RequestHandle requestHandle = oHttpClient.get(getApplicationContext(),
+                "http://payonusa.com/paniagua/usuario/api/v1/prices/"+id_user,(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody){
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+                        //     mMap = googleMap;d
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+                            String valor = String.valueOf(obj.get("active"));
+
+                            if (valor.equals("false")){
+
+                                SharedPreferences sharedPref2 =getSharedPreferences("Suscripcion",Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor2 = sharedPref2.edit();
+                                editor2.putString("estatus", (String) obj.get("statusSuscription"));
+                                editor2.putString("active", String.valueOf((Boolean) obj.get("active")));
+                                editor2.putString("priceId",(String) obj.get("priceIdSubscribed"));
+                                editor2.commit();
+                             //   Toast.makeText(getApplicationContext(), "No Cuentas con suscripción Activa", Toast.LENGTH_SHORT).show();
+
+                            }else{
+                                SharedPreferences sharedPref2 =getSharedPreferences("Suscripcion",Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor2 = sharedPref2.edit();
+                                editor2.putString("estatus", (String) obj.get("statusSuscription"));
+                                editor2.putString("active",String.valueOf((Boolean) obj.get("active")));
+                                editor2.putString("priceId",(String) obj.get("priceIdSubscribed"));
+                                editor2.commit();
+                               // Toast.makeText(getApplicationContext(), "Cuentas con suscripción Activa", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                            // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
+    }
+
+    public boolean Consultar_Cercas_pagadas(Integer rol, String model, String mac, String deviceId, String deviceName, Boolean deviceStatus) throws JSONException, UnsupportedEncodingException {
+
+
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+
+        String id_user = misPreferencias.getString("usuarioId", "0");
+        String aplicacion = "application/json";
+        JSONObject oJSONObject = new JSONObject();
+     //   oJSONObject.put("usuarioId", id_user);
+        //   oJSONObject.put("coordenates",_contrasena);
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
+
+        //  Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //      oEntity.setContentType("Authorization", "Bearer "+token);
+
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        //cambiar varible
+         RequestHandle requestHandle = oHttpClient.get(getApplicationContext(),
+                "http://payonusa.com/api/ListaCercasPagadas/"+id_user,(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody){
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+                        //     mMap = googleMap;d
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+                          //  String valor = String.valueOf(obj.get("active"));
+
+                            JSONArray jsonArray = obj.getJSONArray("ListaCercaPagadas");
+                            for (int i = 0; i < jsonArray.length(); i++)
+                            {
+                                try {
+                                    JSONObject jsonObjectHijo = jsonArray.getJSONObject(i);
+                                    //  Toast.makeText(getApplicationContext(), String.valueOf(jsonObjectHijo), Toast.LENGTH_SHORT).show();
+                                    //  Toast.makeText(getApplicationContext(), String.valueOf(jsonArray2), Toast.LENGTH_SHORT).show();
+                                    JSONObject obj2 =new JSONObject(String.valueOf(jsonObjectHijo));
+                                    String cercaId = obj2.getString("cercaId");
+                                    String status = obj2.getString("status");
+                                    if (cercaId.equals(deviceId)&& status.equals("active")){
+                                        Intent deviceControlIntent = new Intent(HomeActivity.this, DeviceControlActivity.class);
+                                        deviceControlIntent.putExtra("USER_ID", userId);
+                                        deviceControlIntent.putExtra("USER_ROL", rol);
+                                        deviceControlIntent.putExtra("MODEL_ID", model);
+                                        deviceControlIntent.putExtra("DEVICE_ID", deviceId);
+                                        deviceControlIntent.putExtra("DEVICE_NAME", deviceName);
+                                        deviceControlIntent.putExtra("DEVICE_MAC", mac);
+                                        deviceControlIntent.putExtra("DEVICE_STATUS", deviceStatus);
+                                        startActivity(deviceControlIntent);
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Esta cerca no cuenta con ninguna suscripción", Toast.LENGTH_SHORT).show();
+                                    }
+                                 // SONArray jsonArray2 = obj2.getJSONArray("coordenates");
+
+                                } catch (JSONException e) {
+                                    Log.e("Parser JSON", e.toString());
+                                }
+                            }
+
+
+
+                            // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
+    }
+
 
 }

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TranslateAnimation an2 = new TranslateAnimation(00.0f, 0.0f, 1600.0f, 0.0f);
         an2.setDuration(3000);
         logo2.startAnimation(an2);
-        registerWithNotificationHubs();
+        //registerWithNotificationHubs();
         FirebaseCloudMessagingService.createChannelAndHandleNotifications(getApplicationContext());
         //myRegistrationToken();
 

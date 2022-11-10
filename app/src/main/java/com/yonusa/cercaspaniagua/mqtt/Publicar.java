@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.yonusa.cercaspaniagua.libreria.MqttAndroidClient;
 import com.yonusa.cercaspaniagua.utilities.catalogs.Mqtt_CMD;
-import com.yonusa.cercaspaniagua.utilities.catalogs.SP_Dictionary;
 
-
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -16,7 +14,9 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class Publisher {
+
+public class Publicar {
+
 
     String clientId = MqttClient.generateClientId();
     MqttAndroidClient client;
@@ -30,8 +30,9 @@ public class Publisher {
         String mqttPort = prefs.getString("MQTT_PORT", "");
         String mqttPasswrd = prefs.getString("MQTT_PWD", "");
         String mqttUser = prefs.getString("MQTT_USER", "");
+
         try {
-            client = new MqttAndroidClient(context, "tcp://"+mqttHost+":"+mqttPort, clientId);
+            client = new MqttAndroidClient(context, "tcp://"+mqttHost+":"+mqttPort, clientId, MqttAndroidClient.Ack.AUTO_ACK);
             MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
             mqttConnectOptions.setCleanSession(true);
             mqttConnectOptions.setPassword(mqttPasswrd.toCharArray());
@@ -44,7 +45,7 @@ public class Publisher {
                         Log.e("MQTT", message.toString());
                         message.setQos(1);
                         client.publish(Mqtt_CMD.GENERAL_TOPIC.concat(mac), message);
-                      //  client.disconnect();
+                        client.disconnect();
                     } catch (Exception ex) {
                         Log.e("MQTT", ex.getMessage());
                     }
@@ -60,5 +61,4 @@ public class Publisher {
             Log.e("Mqtt", e.getMessage());
         }
     }
-
 }

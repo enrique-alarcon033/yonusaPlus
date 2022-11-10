@@ -28,6 +28,7 @@ import com.yonusa.cercaspaniagua.api.ApiConstants;
 import com.yonusa.cercaspaniagua.api.ApiManager;
 import com.yonusa.cercaspaniagua.api.BaseResponse;
 import com.yonusa.cercaspaniagua.databinding.DeviceControlMainBinding;
+import com.yonusa.cercaspaniagua.mqtt.Publicar;
 import com.yonusa.cercaspaniagua.mqtt.Publisher;
 import com.yonusa.cercaspaniagua.ui.device_control.models.request.GetDeviceControlsRequest;
 import com.yonusa.cercaspaniagua.ui.device_control.models.request.GetEventsByDateRequest;
@@ -36,6 +37,8 @@ import com.yonusa.cercaspaniagua.ui.device_control.models.response.Controls;
 import com.yonusa.cercaspaniagua.ui.device_control.models.response.GetDeviceControlsResponse;
 import com.yonusa.cercaspaniagua.ui.device_control.models.response.GetEventsByDateResponse;
 import com.yonusa.cercaspaniagua.ui.device_control.view.Adapters.DeviceControlAdapter;
+import com.yonusa.cercaspaniagua.ui.password_recovery.Recovery_one;
+import com.yonusa.cercaspaniagua.ui.rutinas.lista_rutinas;
 import com.yonusa.cercaspaniagua.ui.view.view.userList.userAdministration;
 import com.yonusa.cercaspaniagua.utilities.catalogs.Constants;
 import com.yonusa.cercaspaniagua.utilities.catalogs.ErrorCodes;
@@ -47,6 +50,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +66,7 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
     private GetDeviceControlsResponse deviceControlsResponse;
     private ApiManager apiManager;
     private ImageView userAdm;
-    private TextView tvEventDesc, tvEventName, tvDate;
+    private TextView tvEventDesc, tvEventName, tvDate,rutinas;
     private RelativeLayout rlControlDescription;
     private SharedPreferences prefs;
     private MediaPlayer mediaPlayer;
@@ -116,6 +121,13 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
         mac = getIntent().getStringExtra("DEVICE_MAC");
         status = getIntent().getBooleanExtra("DEVICE_STATUS", false);
 
+        rutinas = (TextView) findViewById(R.id.tv_rutinas);
+
+        SharedPreferences preferences = getSharedPreferences("lista", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("mac", mac);
+        editor.apply();
+
         mediaPlayer = MediaPlayer.create(this, R.raw.opendoor);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -135,9 +147,17 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
         recyclerView = findViewById(R.id.recycler_device_control);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 2);
-        adapter = new DeviceControlAdapter(controlsResp, status, this, lyControlHeight);
+        adapter = new DeviceControlAdapter(DeviceControlActivity.this, controlsResp, status, this, lyControlHeight);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        rutinas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceControlActivity.this, lista_rutinas.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -432,6 +452,8 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
 
         Publisher publisher = new Publisher();
         publisher.SendMessage(this, msg, mac);
+     //   Publicar publicar = new Publicar();
+       // publicar.SendMessage(this,msg,mac);
     }
 
     private String getCurrenDateWithTime() {

@@ -69,20 +69,20 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
 
             String Message = remoteMessage.getData().get("message");
 
-            if (bundle.get(PushNotificationKeys.textoMostrar) == null ) return;
+         //   if (bundle.get(PushNotificationKeys.textoMostrar) == null ) return;
 
-            nhMessage = bundle.get(PushNotificationKeys.textoMostrar) + " en " + bundle.get(PushNotificationKeys.aliasCerca);
+            nhMessage = bundle.get("textoMostrar") + " en " + bundle.get("aliascerca");
             String command = bundle.get(PushNotificationKeys.comando);
 
             switch (command) {
 
                 case Mqtt_CMD.ALARM_ON:
-                    startSound(ctx, R.raw.sonido_alarma, 100);
+                    startSound(ctx, R.raw.alarma, 100);
                     sendNotification(nhMessage);
                     break;
                 case "@PANICO_ON": // No se usa el de abajo por que Backend NO ENVÏA el comando en Inglés y lo envía en español.
                 //case Mqtt_CMD.CMD_PANIC_ON:
-                    startSound(ctx, R.raw.panico, 100);
+                    startSound(ctx, R.raw.alarma, 100);
                     sendNotification(nhMessage);
                     break;
                 default:
@@ -116,6 +116,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
         mNotificationManager = (NotificationManager)
                 ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
+
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -125,7 +126,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
                 NOTIFICATION_CHANNEL_ID)
                 .setContentText(msg)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.logo_paniagua)
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
 
         notificationBuilder.setContentIntent(contentIntent);
@@ -144,7 +145,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
             channel.setShowBadge(true);
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+             notificationManager.createNotificationChannel(channel);
         }
     }
 
