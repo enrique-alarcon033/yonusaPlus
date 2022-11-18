@@ -171,7 +171,7 @@
     <string name="set_data_title">Fecha actualizada</string>
     <string name="date_not_updated_title">La fecha no se actualizó</string>
 
-    <string name="wifi_total_pass">@Y0nur1fa_18</string>
+    <string name="wifi_total_pass">Y0nur1fa_18</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
