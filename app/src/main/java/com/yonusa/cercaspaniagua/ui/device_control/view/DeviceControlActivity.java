@@ -66,7 +66,7 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
     private GetDeviceControlsResponse deviceControlsResponse;
     private ApiManager apiManager;
     private ImageView userAdm;
-    private TextView tvEventDesc, tvEventName, tvDate,rutinas;
+    private TextView tvEventDesc, tvEventName, tvDate,rutinas,botones;
     private RelativeLayout rlControlDescription;
     private SharedPreferences prefs;
     private MediaPlayer mediaPlayer;
@@ -122,6 +122,7 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
         status = getIntent().getBooleanExtra("DEVICE_STATUS", false);
 
         rutinas = (TextView) findViewById(R.id.tv_rutinas);
+        botones = (TextView) findViewById(R.id.tv_botones);
 
         SharedPreferences preferences = getSharedPreferences("lista", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -155,6 +156,14 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceControlActivity.this, lista_rutinas.class);
+                startActivity(intent);
+            }
+        });
+
+        botones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceControlActivity.this, Botones.class);
                 startActivity(intent);
             }
         });
@@ -258,6 +267,12 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
 
     public void changeStatusControl(Controls control) {
         sendMqttMessage(control.getControlId(), control.getEstadoControl());
+
+        SharedPreferences prefs = getSharedPreferences("Botones", MODE_PRIVATE);
+        String puerta = prefs.getString("puerta", "0");
+        String aux1 = prefs.getString("aux1", "0");
+        String aux2 = prefs.getString("aux2", "0");
+
         if (control.getEstadoControl()) {
             control.setEstadoControl(false);
             updateView();
@@ -267,8 +282,12 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
             if (control.getControlId() == Constants.DOOR_ID) {
                 Toast.makeText(DeviceControlActivity.this, getString(R.string.door_on_message_seconds), Toast.LENGTH_LONG).show();
                 new doorInteraction(control).start();
-            } else {
-
+            } else if (control.getControlId()==Constants.AUX1_ID && aux1.equals("1")){
+                Toast.makeText(DeviceControlActivity.this, "el aux1 se apagar en 5 seg", Toast.LENGTH_LONG).show();
+                new aux1Interaction(control).start();
+            }else if(control.getControlId()==Constants.AUX2_ID && aux2.equals("1")){
+                Toast.makeText(DeviceControlActivity.this, "el aux2 se apagar en 5 seg", Toast.LENGTH_LONG).show();
+                new aux2Interaction(control).start();
             }
         }
     }
@@ -348,6 +367,56 @@ public class DeviceControlActivity extends AppCompatActivity implements View.OnC
         Controls control;
 
         public doorInteraction(Controls control) {
+            this.control = control;
+        }
+
+        @Override
+        public void run() {
+            try {
+                //TODO
+                Thread.sleep(5000);
+                runOnUiThread(() -> {
+                    mediaPlayer.start();
+                    sendMqttMessage(control.getControlId(), control.getEstadoControl());
+                    control.setEstadoControl(false);
+                    updateView();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class aux1Interaction extends Thread {
+
+        Controls control;
+
+        public aux1Interaction(Controls control) {
+            this.control = control;
+        }
+
+        @Override
+        public void run() {
+            try {
+                //TODO
+                Thread.sleep(5000);
+                runOnUiThread(() -> {
+                    mediaPlayer.start();
+                    sendMqttMessage(control.getControlId(), control.getEstadoControl());
+                    control.setEstadoControl(false);
+                    updateView();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class aux2Interaction extends Thread {
+
+        Controls control;
+
+        public aux2Interaction(Controls control) {
             this.control = control;
         }
 

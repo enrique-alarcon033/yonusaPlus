@@ -20,7 +20,7 @@ public class Constants {
     public static final int LIGHTS_ID = 4;
     public static final int AUX1_ID = 5;
     public static final int AUX2_ID = 6;
-    public static final int PANEL_ID = 7;
+    public static final int PANEL_D = 7;
     public static final int ZONE_ID = 8;
     public static final int DATE_ID = 9;
 

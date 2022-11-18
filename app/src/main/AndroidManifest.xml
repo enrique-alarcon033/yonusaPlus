@@ -22,7 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.rutinas.eliminar_rutina"></activity>
+        <activity
+            android:name=".ui.device_control.view.Botones"
+            android:exported="false" />
+        <activity android:name=".ui.rutinas.eliminar_rutina" />
         <activity android:name=".ui.rutinas.lista_rutinas" />
         <activity android:name=".ui.rutinas.Rutina" />
         <activity android:name=".ui.createAccount.create.CrearCuenta" />

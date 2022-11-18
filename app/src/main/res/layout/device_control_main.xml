@@ -41,8 +41,7 @@
                 android:id="@+id/banner_user_info"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:background="@color/white"
-                />
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/tv_control_description"
@@ -97,11 +96,25 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="-30dp"
-            android:textColor="@color/privacyPagecolor"
             android:drawableLeft="@drawable/ic_rutina"
+            android:text="  Mis Rutinas"
+            android:textColor="@color/privacyPagecolor"
             android:textSize="17dp"
-            android:textStyle="bold"
-            android:text="  Mis Rutinas" />
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_botones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_rutinas"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="0dp"
+            android:drawableLeft="@drawable/reloj_on"
+            android:text="  Botones Pulsantes"
+            android:textColor="@color/privacyPagecolor"
+            android:textSize="17dp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_device_control"
