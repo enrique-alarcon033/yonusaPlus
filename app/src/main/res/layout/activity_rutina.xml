@@ -217,6 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        android:textSize="21sp"
                         android:text="comando" />
 
                     <Button
@@ -225,9 +226,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_secundary"
-                        android:text="Crear Rutina" />
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="18sp"
+                        android:background="@drawable/btn_primary"
+                        android:text="Crear Rutina"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

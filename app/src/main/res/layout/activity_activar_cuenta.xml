@@ -51,7 +51,7 @@
                 android:contentDescription="@string/app_name"
                 android:elevation="2.5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/logo_paniagua" />
+                android:src="@drawable/logo_yonusa" />
 
         </RelativeLayout>
 
@@ -92,7 +92,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
-            android:background="@drawable/label"
+            android:background="@drawable/ic_label2"
             android:hint="@string/activation_code"
             android:inputType="number"
             android:paddingStart="10dp"
@@ -126,11 +126,11 @@
             android:layout_marginRight="25dp"
             android:layout_below="@+id/tv_activation_count_description"
             android:layout_marginBottom="25dp"
-            android:background="@drawable/btn_secundary"
+            android:background="@drawable/btn_primary"
             android:foreground="?attr/selectableItemBackground"
             android:inputType="number"
             android:text="@string/activation_code_btn_accept"
-            android:textColor="@color/negro"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

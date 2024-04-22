@@ -1,27 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <item android:title="Configuración">
+        <menu>
+            <item
+                android:title="Configurar Modulo"
+                android:id="@+id/nav_add"
+                android:icon="@drawable/add_button"
+            />
+            <item
+                android:title="Agregar Cerco Ethernet"
+                android:id="@+id/nav_ethernet"
+                android:visible="false"
+                android:icon="@drawable/add_button"
+                />
+        </menu>
+    </item>
+
+    <item android:title="Seguridad Total"
+        android:visible="false">
+        <menu>
+         <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_jugadores"
-            android:icon="@drawable/ic_launcher"
-            android:title="Jugadores" />
+            android:id="@+id/nav_beneficiarios"
+            android:icon="@drawable/ic_lista_user"
+            android:title="Beneficiarios" />
+
         <item
-            android:id="@+id/nav_albitros"
-            android:icon="@drawable/ic_backspace_black_24dp"
-            android:title="Albitros" />
+            android:id="@+id/nav_ambulancia"
+            android:icon="@drawable/ic_ambulancia"
+            android:title= "Solicitar Ambulancia" />
+
         <item
-            android:id="@+id/nav_jornadas"
-            android:icon="@drawable/ic_launcher"
-            android:title= "Jornadas" />
+            android:id="@+id/nav_asistencia_medica"
+            android:icon="@drawable/ic_doctor"
+            android:title="Asistencia Médica" />
+
+
+        <item
+            android:id="@+id/nav_psicologo"
+            android:icon="@drawable/ic_psicologo"
+            android:title= "Consulta Psícologo" />
+
+        <item
+            android:id="@+id/nav_medicamento"
+            android:icon="@drawable/ic_pastillas"
+            android:title= "Solicitar Medicamentos" />
+
+        <item
+            android:id="@+id/nav_nutriologo"
+            android:icon="@drawable/ic_nutriologo"
+            android:title= "Consulta Nutriólogo" />
     </group>
+        </menu>
+    </item>
+
+    <item android:title="Mi Plan">
+        <menu>
+            <item
+                android:id="@+id/nav_paquetes"
+                android:icon="@drawable/ic_suscripcion"
+                android:visible="false"
+                android:title="Paquetes" />
+
+            <item
+                android:id="@+id/nav_tarjetas"
+                android:icon="@drawable/ic_tarjeta"
+                android:visible="false"
+                android:title="Mis tarjetas" />
+
+            <item
+                android:id="@+id/nav_cancelar"
+                android:icon="@drawable/ic_cancelar"
+                android:visible="false"
+                android:title="Plan Activo" />
+
+
+
+        </menu>
+    </item>
+
 
     <item android:title="Administrador">
         <menu>
+
+            <item
+                android:id="@+id/nav_perfil"
+                android:iconTint="@color/white"
+                android:icon="@drawable/ic_perfil"
+                android:title="Mi cuenta" />
+
             <item
                 android:id="@+id/nav_cerrar"
                 android:icon="@drawable/close"
-                android:title="Cerrar Sesión" />
+                android:title="Cerrar Sesión"
+                tools:ignore="MissingPrefix" />
 
         </menu>
     </item>
@@ -29,9 +103,20 @@
     <item android:title="Desarrollo">
         <menu>
             <item
+                android:title="Versión 2.030424.29"
+                android:icon="@drawable/ic_bug"/>
+            <item
+                android:id="@+id/nav_comentarios"
+                android:icon="@drawable/ic_comentarios"
+                android:title= "Dejanos tus comentarios" />
 
-                android:title="Versión 0.0.001" />
+            <item
+                android:id="@+id/nav_usbserial"
+                android:iconTint="@color/white"
+                android:icon="@drawable/ic_usb"
+                android:title="Modo USBSerial" />
 
         </menu>
     </item>
+
 </menu>

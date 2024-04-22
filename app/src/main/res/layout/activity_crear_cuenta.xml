@@ -34,7 +34,7 @@
                 android:contentDescription="@string/app_name"
                 android:elevation="2.5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/logo_paniagua" />
+                android:src="@drawable/logo_yonusa" />
 
         </RelativeLayout>
 
@@ -85,7 +85,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@drawable/label"
+                        android:background="@drawable/ic_label2"
                         android:hint="@string/name"
                         android:inputType="textPersonName"
                         android:paddingStart="10dp"
@@ -104,7 +104,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@drawable/label"
+                        android:background="@drawable/ic_label2"
                         android:hint="@string/lastname"
                         android:inputType="textPersonName"
                         android:paddingStart="10dp"
@@ -113,8 +113,10 @@
                         android:textColorHint="@color/lightGray"
                         android:textSize="16sp" />
 
+
+
                     <EditText
-                        android:id="@+id/email_editText_cc"
+                        android:id="@+id/spinner_basic"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_below="@+id/apellidos_editText_cc"
@@ -124,7 +126,50 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/label"
+                        android:background="@drawable/ic_label2"
+                        android:hint="Pais"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@color/negro"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/spinner_localidad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/spinner_basic"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/ic_label2"
+                        android:hint="Estado / Localidad"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@color/negro"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="16sp" />
+
+
+                    <EditText
+                        android:id="@+id/email_editText_cc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/spinner_localidad"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/ic_label2"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:paddingStart="10dp"
@@ -151,7 +196,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="0dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/label"
+                            android:background="@drawable/ic_label2"
                             android:hint="@string/password"
                             android:inputType="textPassword"
                             android:paddingStart="10dp"
@@ -162,7 +207,7 @@
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_show_pass_cc"
-                            android:layout_width="60dp"
+                            android:layout_width="70dp"
                             android:layout_height="30dp"
                             android:layout_alignEnd="@+id/passwrd_editText_cc"
                             android:layout_centerVertical="true"
@@ -173,8 +218,8 @@
                             android:foreground="?attr/selectableItemBackground"
                             android:text="@string/show"
                             android:textAllCaps="false"
-                            android:textColor="@color/negro"
-                            android:textSize="12sp" />
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
                     </RelativeLayout>
 
@@ -195,7 +240,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="0dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/label"
+                            android:background="@drawable/ic_label2"
                             android:hint="@string/password_confirm"
                             android:inputType="textPassword"
                             android:paddingStart="10dp"
@@ -206,7 +251,7 @@
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_show_pass_confirm_cc"
-                            android:layout_width="60dp"
+                            android:layout_width="70dp"
                             android:layout_height="30dp"
                             android:layout_alignEnd="@+id/passwrd_confirm_editText_cc"
                             android:layout_centerVertical="true"
@@ -217,8 +262,8 @@
                             android:foreground="?attr/selectableItemBackground"
                             android:text="@string/show"
                             android:textAllCaps="false"
-                            android:textColor="@color/negro"
-                            android:textSize="12sp" />
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
                     </RelativeLayout>
 
@@ -235,7 +280,27 @@
                         app:ccp_arrowColor="@color/lightGray"
                         app:ccp_autoDetectCountry="true"
                         app:ccp_contentColor="@color/lightGray"
+                        android:visibility="gone"
                         app:ccp_showNameCode="false" />
+
+                    <EditText
+                        android:id="@+id/codigo_pais"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/passwrd_confirm_relative_cc"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ic_label2"
+                        android:hint="+52"
+                        android:textAlignment="center"
+                        android:inputType="number"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
+                        android:enabled="false"
+                        android:textColor="@color/negro"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/celphone_editText_cc"
@@ -243,11 +308,11 @@
                         android:layout_height="50dp"
                         android:layout_below="@+id/passwrd_confirm_relative_cc"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="26dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="16dp"
                         android:layout_toEndOf="@+id/phoneCodeInput"
-                        android:background="@drawable/label"
+                        android:background="@drawable/ic_label2"
                         android:hint="@string/celphone"
                         android:inputType="number"
                         android:paddingStart="10dp"
@@ -299,10 +364,46 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_secundary"
+                        android:background="@drawable/btn_primary"
                         android:foreground="?attr/selectableItemBackground"
                         android:text="@string/create_account"
-                        android:textColor="@color/negro" />
+                        android:textColor="@color/white" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_paises"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_alignTop="@+id/spinner_basic"
+                        android:layout_alignEnd="@+id/spinner_basic"
+                        android:layout_alignBottom="@+id/spinner_basic"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_edit_text_shape"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:text="Buscar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_localidad"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_alignTop="@+id/spinner_localidad"
+                        android:layout_alignEnd="@+id/spinner_localidad"
+                        android:layout_alignBottom="@+id/spinner_localidad"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_edit_text_shape"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:text="Buscar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
             </LinearLayout>

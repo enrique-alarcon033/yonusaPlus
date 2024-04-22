@@ -21,7 +21,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/logo_paniagua" />
+            app:srcCompat="@drawable/logo_yonusa_blanco" />
 
 
 

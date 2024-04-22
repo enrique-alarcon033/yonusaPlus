@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#76232F</color>
-    <color name="colorPrimaryDark">#76232F</color>
+    <color name="colorPrimary">#4AB1D2</color>
+    <color name="colorPrimary2">#7DCAE2</color>
+    <color name="colorPrimaryDark">#4AB1D2</color>
     <color name="white">#ffffff</color>
-    <color name="pseudo_white">#FBF3F3</color>
+    <color name="pseudo_white">#FAFAFA</color>
     <color name="white25">#25ffffff</color>
-    <color name="lightGray">#A8ABAE</color>
-    <color name="black25">#76232F</color>
+    <color name="lightGray">#8D8D8D</color>
+    <color name="black25">#4AB1D2</color>
     <color name="negro">#000000</color>
     <color name="privacyPagecolor">#0056a4</color>
+    <color name="amarillo">#FFC42D</color>
+    <color name="amarillo2">#FAC84A</color>
     <color name="transparentWhiteColor">#ffffff</color>
+    <color name="trasnparente">#02FFFFFF</color>
     <color name="clear"/>
+    <color name="narnaja">#FF921D</color>
 
     <color name="colorGradientStart">#0148A5</color>
     <color name="colorGradientCenter">#00ADF2</color>
@@ -22,5 +27,12 @@
     <color name="rojo">#FF0000</color>
 
     <color name="colorTransparent">#0050D0FF</color>
+    <color name="gris_claro">#CACACA</color>
+    <color name="verde">#07AA16</color>
+
+    <color name="snackbar_message">#FEFEFE</color>
+    <color name="snackbar_background_positive">#26A3DB</color>
+    <color name="snackbar_background_negative">#FCB033</color>
+
 
 </resources>

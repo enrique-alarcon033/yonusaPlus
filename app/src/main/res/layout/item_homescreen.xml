@@ -5,13 +5,13 @@
     android:layout_height="76dp"
     android:background="@color/device_disable"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/device_disable"
+
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="10dp"
 
     >
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cell_container"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
@@ -32,113 +32,103 @@
             android:layout_marginBottom="13dp"
             android:background="@drawable/shape_circle"
             android:padding="2dp"
+            android:visibility="gone"
             android:scaleType="centerInside"
             android:src="@drawable/ico_fence_disable" />
 
         <ImageView
             android:id="@+id/device_icon"
-            android:contentDescription="@string/icn_device"
-            android:layout_width="30dp"
-            android:layout_height="37dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignStart="@+id/circle_background"
-
             android:layout_alignTop="@+id/circle_background"
+
             android:layout_alignEnd="@+id/circle_background"
             android:layout_alignBottom="@+id/circle_background"
-
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_circle"
-            android:src="@drawable/ico_fence_disable" />
+            android:contentDescription="@string/icn_device"
+            android:src="@drawable/ic_verde"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_status"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
         <View
             android:id="@+id/top_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
             android:layout_toEndOf="@id/circle_background"
-
-            android:background="@drawable/rounded_login_container"/>
+            android:background="@drawable/rounded_login_container"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/circle_background" />
 
         <ImageView
             android:id="@+id/icn_status"
-            android:layout_width="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ico_noconexion"
-            android:padding="2dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
             android:contentDescription="@string/icn_status"
-            />
+            android:padding="2dp"
+            android:src="@drawable/ic_cerca"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_model_id"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/icn_status"
             android:layout_toEndOf="@id/circle_background"
-
             android:paddingStart="8dp"
+
             android:paddingEnd="8dp"
-android:textColor="@color/negro"
             android:text="@string/model_id"
             android:textAlignment="viewStart"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-             />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
-            android:layout_height="11dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-
-            android:layout_toStartOf="@+id/icn_status"
+            android:layout_height="13dp"
             android:layout_below="@id/tv_model_id"
-            android:layout_toEndOf="@id/circle_background"
-
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-
-            android:text="@string/device_status"
-            android:textSize="10sp"
-            android:textColor="@color/negro"
-            android:textStyle="normal"
+            android:layout_alignParentEnd="true"
+            android:text="Conectado"
             android:textAllCaps="false"
+            android:textColor="@color/negro"
 
-            />
+            android:layout_marginRight="10dp"
+            android:textSize="10sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_device_name"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@id/top_view"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toEndOf="@id/circle_background"
-
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-
             android:text="@string/device_name"
-            android:textColor="@color/white"
-
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:textAllCaps="false"
+            android:textColor="@color/negro"
+            android:textSize="20sp"
 
-            />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/icn_status"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

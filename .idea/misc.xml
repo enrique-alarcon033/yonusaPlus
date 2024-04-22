@@ -1,16 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/activity_activar_cuenta.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/activity_botones.xml" value="0.264" />
+        <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/activity_lista_cercas.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/activity_lista_rutinas.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/activity_rutina.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Android/AndroidStudioProjects/Cercas_Paniagua_noviembre/app/src/main/res/layout/device_control_main.xml" value="0.4" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/drawable/cell_background_disable.xml" value="0.215" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/drawable/cell_background_enable.xml" value="0.215" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/drawable/item_control_shape.xml" value="0.3275" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/drawable/rounded_login_container.xml" value="0.215" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_activar_cuenta.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_activar_cuenta2.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_add_user.xml" value="0.264" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_crear_cuenta.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_events_by_date.xml" value="0.264" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_home.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_login.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_loguin_new.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_password_recovery.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_recovery_one.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_recovery_two.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/activity_rutina.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/create_account_activity.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/decive_control_item.xml" value="0.4" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/device_control_main.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/fragment_activation_count.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/fragment_create_account_form.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/item_homescreen.xml" value="0.536" />
+        <entry key="..\:/Users/Android/Desktop/Plus yonu/app/src/main/res/layout/yonusa_toolbar.xml" value="0.3489583333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

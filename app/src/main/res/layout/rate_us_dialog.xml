@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/amarillo2"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:background="@color/amarillo"
+                android:layout_height="120dp" />
+
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="-75dp"
+                android:background="@drawable/round_while"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+               <View
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@drawable/round_while_1000"/>
+                <ImageView
+                    android:id="@+id/img_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:padding="25dp"
+                    android:src="@drawable/ic_feliz2"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danos tus comentarios"
+                android:layout_gravity="center"
+                android:textSize="23dp"
+                android:textColor="@color/negro"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/textView40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comparte tus ideas con nuestro equipo de desarrolladores para poder darte nuevas herramientas y mejoras."
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <RatingBar
+                android:id="@+id/ratingsBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/separator"
+                android:layout_alignEnd="@+id/rateHeader"
+                android:layout_alignRight="@+id/rateHeader"
+                android:layout_gravity="center"
+                android:stepSize="1"
+                android:progressTint="@color/amarillo"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="25dp"
+                android:clickable="false"
+                android:rating="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/separator" />
+
+            <TextView
+                android:id="@+id/rateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingsBar"
+                android:layout_centerHorizontal="true"
+                android:text="5"
+                android:visibility="gone"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingsBar" />
+
+            <EditText
+                android:id="@+id/reviewED"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/errorTV"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:hint="Escribe tus comentarios"
+                android:lines="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rateTV" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingBottom="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnDespues"
+                    android:text="Cancelar"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/negro"
+                    android:background="@drawable/round_gris"
+                    android:paddingEnd="20dp"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/btn_guardar_comentario"
+                    android:text="Comentar"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_blue"
+                    android:layout_marginEnd="20dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

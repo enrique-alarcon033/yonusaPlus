@@ -138,5 +138,15 @@ android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_cal" />
 
+    <TextView
+        android:id="@+id/id_Rutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

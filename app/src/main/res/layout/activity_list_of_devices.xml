@@ -108,5 +108,47 @@
         android:foreground="?attr/selectableItemBackground"
         />
 
+    <Button
+        android:id="@+id/btn_to_wifi2"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@+id/btn_to_wifi"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_white"
+        android:foreground="?attr/selectableItemBackground" />
+
+    <ImageView
+        android:id="@+id/iv_add_wifi2"
+        android:visibility="gone"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignStart="@+id/btn_to_wifi2"
+        android:layout_alignTop="@+id/btn_to_wifi2"
+        android:layout_alignBottom="@+id/btn_to_wifi2"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="6dp"
+        android:gravity="center"
+        android:src="@drawable/ic_ethernet" />
+
+    <TextView
+        android:id="@+id/tv_wifi_list2"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/btn_to_wifi2"
+        android:layout_toEndOf="@id/iv_add_wifi"
+        android:gravity="center"
+        android:text="@string/ethernet_device"
+        android:textAlignment="center"
+        android:textColor="@color/negro"
+        android:textSize="21sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

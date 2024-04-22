@@ -84,13 +84,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:textSize="18sp"
-        android:textColor="@color/negro"
-        android:background="@drawable/btn_secundary"
+        android:background="@drawable/btn_primary"
+        android:elevation="1dp"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/search_events_text"
         android:textAllCaps="false"
-        android:elevation="1dp"
-        android:foreground="?attr/selectableItemBackground"/>
+        android:textColor="@color/pseudo_white"
+        android:textSize="18sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_date_events"

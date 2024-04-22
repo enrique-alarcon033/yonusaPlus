@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo2"
+    tools:context=".ui.add_devices.ethernet.agregar_ethernet">
+
+    <TextView
+        android:id="@+id/id_user_ethernet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usuario ID"
+        android:visibility="gone"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_alias_ethernet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:textAlignment="center"
+        android:ems="10"
+        android:background="@drawable/ic_label2"
+        android:layout_marginTop="55dp"
+        android:inputType="text"
+        android:hint="Alias del Cerco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_user_ethernet" />
+
+    <EditText
+        android:id="@+id/et_Mac_ethernet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:background="@drawable/ic_label2"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textAlignment="center"
+        android:hint="MAC a asociar"
+        android:layout_marginTop="25dp"
+        android:focusable="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+    <Button
+        android:id="@+id/btn_agregar_Ethernet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Asociar MAC"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:background="@drawable/btn_primary"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_alias_ethernet"
+        app:srcCompat="@drawable/ic_scan" />
+
+    <TextView
+        android:id="@+id/textView38"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Para finalizar la configuracion del dispositivo Ethernet escanea el codigo Qr de la tarjeta y preciona el boton de asociar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textStyle="italic"
+        android:textColor="@color/negro"
+        android:textSize="18dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgScan" />
+</androidx.constraintlayout.widget.ConstraintLayout>

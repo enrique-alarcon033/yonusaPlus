@@ -51,7 +51,7 @@
                 android:contentDescription="@string/app_name"
                 android:elevation="2.5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/logo_paniagua" />
+                android:src="@drawable/logo_yonusa" />
 
         </RelativeLayout>
 
@@ -90,6 +90,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="24dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/label"
             android:hint="@string/activation_code"
             android:inputType="number"
@@ -124,11 +126,11 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="25dp"
-            android:background="@drawable/btn_secundary"
+            android:background="@drawable/btn_primary"
             android:foreground="?attr/selectableItemBackground"
             android:inputType="number"
             android:text="@string/activation_code_btn_accept"
-            android:textColor="@color/negro"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

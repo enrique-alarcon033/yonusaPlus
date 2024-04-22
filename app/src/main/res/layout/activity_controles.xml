@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.usbSerial.Controles">
+
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="serial"
+        android:visibility="gone"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:background="#000000"
+        android:scrollbars="vertical"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:gravity="bottom" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="28dp"
+        android:visibility="gone"
+        android:ems="10">
+
+        <requestFocus/>
+    </EditText>
+
+    <Button
+        android:id="@+id/buttonSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignRight="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="42dp"
+        android:background="@color/negro"
+        android:visibility="gone"
+        android:text="Send"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
+
+        <include
+            android:id="@+id/top_menu"
+            layout="@layout/yonusa_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true" />
+
+        <RelativeLayout
+            android:id="@+id/relative_control_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_menu">
+
+            <View
+                android:id="@+id/banner_user_info"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_control_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Expo seguridad"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/tv_control_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_control_name"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:text="Cerca Encendia / Electric fence Turned on"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_control_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_control_description"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:text="16/05/2024  14:00:00"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/historial"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/tv_control_date"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
+                app:srcCompat="@drawable/ic_historial" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_rutinas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_control_description"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="-30dp"
+            android:drawableLeft="@drawable/ic_rutina"
+            android:text="  Mis Rutinas"
+            android:textColor="@color/privacyPagecolor"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_botones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_rutinas"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="0dp"
+            android:drawableLeft="@drawable/reloj_on"
+            android:text="  Botones Pulsantes"
+            android:textColor="@color/privacyPagecolor"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ly_control_cards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/relative_control_description"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/clear"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/ly_control1"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/clear"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:id="@+id/rl_control1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/clear"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:onClick="onClick" />
+
+                    ♦
+
+                    <ImageView
+                        android:id="@+id/iv_control1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/btn_fence_off" />
+
+                    <TextView
+                        android:id="@+id/tv_control1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/fence_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_control2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <ImageView
+                        android:id="@+id/iv_control2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/btn_panico_off" />
+
+                    <TextView
+                        android:id="@+id/tv_control2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/panic_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_control2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:id="@+id/rl_control3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <ImageView
+                        android:id="@+id/iv_control3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/btn_puerta_on" />
+
+                    <TextView
+                        android:id="@+id/tv_control3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/door_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_control4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <ImageView
+                        android:id="@+id/iv_control4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/btn_luces_off" />
+
+                    <TextView
+                        android:id="@+id/tv_control4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/light_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_control3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:id="@+id/rl_control5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <ImageView
+                        android:id="@+id/iv_control5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/btn_aux_off" />
+
+                    <TextView
+                        android:id="@+id/tv_control5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/aux1_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_control6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/ib_control6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        android:foreground="?attr/selectableItemBackground" />
+
+                    <ImageView
+                        android:id="@+id/iv_control6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/btn_aux_off" />
+
+                    <TextView
+                        android:id="@+id/tv_control6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/aux2_text"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

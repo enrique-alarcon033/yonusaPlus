@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/switch3" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/guardar_botones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gurdar Cambios"

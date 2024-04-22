@@ -5,4 +5,9 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="content_padding_top">20dp</dimen>
+    <dimen name="content_margin_bottom">10dp</dimen>
+    <dimen name="snackbar_minimum_height">48dp</dimen>
+    <dimen name="snackbar_text_size">18sp</dimen>
 </resources>

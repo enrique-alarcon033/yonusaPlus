@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "32279858859",
+    "project_id": "paniagua-f1e82",
+    "storage_bucket": "paniagua-f1e82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32279858859:android:5b1ab8fec0be8383f4f1ee",
+        "android_client_info": {
+          "package_name": "com.yonusa.cercaspaniagua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32279858859-ouj61kov2omie4k6tpu1qgq6vvoo3vav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVBSAhBd8261M0XO-br2cWkIsjVUtDa8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32279858859-ouj61kov2omie4k6tpu1qgq6vvoo3vav.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "32279858859-rl165r991k8fv5fpkjc7vdfq4c1pe48q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paniagua.instaladores",
+                "app_store_id": "6443623414"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32279858859:android:439263e28f5834b5f4f1ee",
+        "android_client_info": {
+          "package_name": "com.yonusa.paniaguainstaladores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32279858859-ouj61kov2omie4k6tpu1qgq6vvoo3vav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVBSAhBd8261M0XO-br2cWkIsjVUtDa8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32279858859-ouj61kov2omie4k6tpu1qgq6vvoo3vav.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "32279858859-rl165r991k8fv5fpkjc7vdfq4c1pe48q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paniagua.instaladores",
+                "app_store_id": "6443623414"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
