@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -18,6 +19,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.yonusa.cercasyonusaplus.MainActivity;
 import com.yonusa.cercasyonusaplus.R;
+import com.yonusa.cercasyonusaplus.ui.add_devices.list_of_devices.AddANewDeviceActivity;
 import com.yonusa.cercasyonusaplus.utilities.catalogs.Mqtt_CMD;
 
 import java.util.Map;
@@ -34,6 +36,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
     private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
     static Context ctx;
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -111,28 +114,35 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
 
 
     private void sendNotification(String msg) {
+        if (ctx != null) {
+            String packageName =  this.getPackageName();
+            Intent intent = new Intent(ctx, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        Intent intent = new Intent(ctx, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        mNotificationManager = (NotificationManager)
-                ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager = (NotificationManager)
+                    ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0,
-                intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0,
+                    intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                ctx,
-                NOTIFICATION_CHANNEL_ID)
-                .setContentText(msg)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.logo_yonusa)
-                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
+                    ctx,
+                    NOTIFICATION_CHANNEL_ID)
+                    .setContentText(msg)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(R.drawable.logo_yonusa)
+                    .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
 
-        notificationBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            notificationBuilder.setContentIntent(contentIntent);
+            mNotificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        } else {
+            // Handle the case where context is null (e.g., log an error)
+            Toast.makeText(FirebaseCloudMessagingService.this, "Ocurrio un error al enviar la notificacion.", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     public static void createChannelAndHandleNotifications(Context context) {
@@ -154,12 +164,13 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
 
     public static void startSound(final Context context, final int sound, final float volume){
 
-        new Thread(() -> {
-            MediaPlayer mp = MediaPlayer.create(context, sound);
-            mp.setVolume(volume,volume);
-            mp.start();
-        }).start();
-
+        if (context!=null){
+            new Thread(() -> {
+                MediaPlayer mp = MediaPlayer.create(context, sound);
+                mp.setVolume(volume,volume);
+                mp.start();
+            }).start();
+        }
     }
 
     public  void startVibrator(final Context con){

@@ -43,9 +43,9 @@ public class MiCuenta extends AppCompatActivity {
     TextView nombre, correo,telefono,pais,estado;
     ImageView alerta;
 
-    Button modificar,actualizar;
+    Button modificar,actualizar,eliminar;
 
-    AlertDialog carga;
+    AlertDialog carga,carga2;
 
     @SuppressLint({"ResourceAsColor", "MissingInflatedId"})
     @Override
@@ -62,10 +62,16 @@ public class MiCuenta extends AppCompatActivity {
 
         modificar = (Button) findViewById(R.id.btn_modificar);
         actualizar = (Button) findViewById(R.id.btn_actualizar_pass);
+        eliminar = (Button) findViewById(R.id.btn_BajaCuenta);
 
         carga = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Actualizando Contraseña")
+                .setCancelable(false).build();
+
+        carga2 = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espera un momento")
                 .setCancelable(false).build();
 
         SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
@@ -114,6 +120,14 @@ public class MiCuenta extends AppCompatActivity {
             }
         });
 
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogBaja(getApplicationContext(),"Hola");
+            }
+        });
+
+
     }
 
     public void showDialog(Context context, String message){
@@ -133,45 +147,13 @@ public class MiCuenta extends AppCompatActivity {
         final ImageView img_rating = dialogLayout.findViewById(R.id.img_rating);
         final android.app.AlertDialog mdialog = builder.show();
         builder.setView(dialogLayout);
-
-    /*    ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                TvRating.setText(String.valueOf(rating));
-                double doble = Double.parseDouble(TvRating.getText().toString());
-                int entero = (int)doble;
-                //int elEntero = Integer.parseInt(Double.toString(d));
-                TvRating.setText(String.valueOf(entero));
-
-                if (rating <=1){
-                    img_rating.setImageResource(R.drawable.ic_triste2);
-                }
-                else if (rating <=2){
-                    img_rating.setImageResource(R.drawable.ic_trsite1);
-                }
-                else if (rating <=3){
-                    img_rating.setImageResource(R.drawable.ic_neutral);
-                }
-                else if (rating <=4){
-                    img_rating.setImageResource(R.drawable.ic_feliz1);
-                }
-                else if (rating <=5){
-                    img_rating.setImageResource(R.drawable.ic_feliz2);
-                }
-               // animacion(img_rating);
-
-            }
-        }); */
-
         builder.show();
-
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // mdialog.cancel();
                 Toast.makeText(MiCuenta.this, "Gracias por tu calificación, seguiremos mejorando" +
                         ratingBar.getRating(), Toast.LENGTH_SHORT).show();
-
             }
         });
         btnGuardar.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +179,115 @@ public class MiCuenta extends AppCompatActivity {
             }
         });
     }
+    public void showDialogBaja(Context context, String message){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        //builder.setTitle("Dejanos tus comentarios");
 
+        View dialogLayout = inflater.inflate(R.layout.dialog_baja_cuenta,
+                null);
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final Button btnEliminar = dialogLayout.findViewById(R.id.btn_eliminar_cuenta);
+        final Button btnCancelar = dialogLayout.findViewById(R.id.btnDespues);
+        //final ImageView img_rating = dialogLayout.findViewById(R.id.img_rating);
+        final android.app.AlertDialog mdialog = builder.show();
+        builder.setView(dialogLayout);
+        builder.show();
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+
+            }
+        });
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  //  Toast.makeText(getApplicationContext(), "Debes ingresar la contraseña Actual", Toast.LENGTH_LONG).show();
+                try {
+                    EliminarCuenta();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    public boolean EliminarCuenta() throws JSONException, UnsupportedEncodingException {
+        carga2.show();
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+        String idUser_t = misPreferencias.getString("usuarioId","0");
+        JSONObject oJSONObject = new JSONObject();
+
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        //cambiar varible
+        RequestHandle requestHandle = oHttpClient.delete(getApplicationContext(),
+                "https://fntyonusa.payonusa.com/api/PreliminacionUsuario/"+idUser_t,(HttpEntity) oEntity, "application/json" ,new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody){
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+                        //     mMap = googleMap;d
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+                            String valor = String.valueOf(obj.get("codigo"));
+
+                            if (valor.equals("0")){
+                                Toast.makeText(getApplicationContext(), "Tu cuenta se eliminará en 7 dias", Toast.LENGTH_LONG).show();
+                                finish();
+                                //  loader.setVisibility(View.GONE);
+                            }
+                            if (valor.equals("-1")){
+                                Toast.makeText(getApplicationContext(), "Ha ocurrido un error"+valor, Toast.LENGTH_LONG).show();
+                                // loader.setVisibility(View.GONE);
+                            }
+                            carga2.dismiss();
+                            // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                        carga2.dismiss();
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
+    }
     public boolean Actualizar_password(String password_T,String newPassword) throws JSONException, UnsupportedEncodingException {
         carga.show();
         SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
@@ -284,4 +374,15 @@ public class MiCuenta extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        // Check if there are any fragments in the back stack
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            // Pop the last fragment from the back stack
+            getFragmentManager().popBackStack();
+        } else {
+            // If there are no fragments in the back stack, finish the activity
+            super.onBackPressed();
+        }
+    }
 }

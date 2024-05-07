@@ -1,6 +1,7 @@
 package com.yonusa.cercasyonusaplus.ui.login.view;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -106,11 +107,14 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
 
     private static String TAG1 = "xxxxxx";
     private static final int RQC = 1;
-    private String[] grupoPermisos = new String[]{Manifest.permission.POST_NOTIFICATIONS};
+    private static final int RQC2 = 2;
+    private String[] grupoPermisos = new String[]{Manifest.permission.READ_PHONE_STATE};
+    private String[] grupoPermisos2 = new String[]{Manifest.permission.POST_NOTIFICATIONS};
     private static final int REQUEST_CODE_SCHEDULE_EXACT_ALARM = 100;
 
     ImageView img_usb;
 
+    int REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +142,20 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                 .setMessage("Espere un momento")
                 .setCancelable(false).build();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, REQUEST_CODE_SCHEDULE_EXACT_ALARM);
+            }
+        }
 
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                context.startActivity(intent);
+            }
+        }*/
 
       //  new GetTask().execute();
         try {
@@ -151,7 +168,37 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
 
         SP_Helper sp_helper = new SP_Helper();
         createNotificationChannel();
-        compruebaPermiso();
+        verificarPermisos();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            // Check if the permission is already granted
+            if (checkSelfPermission(Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
+
+                // Explain to the user why the app needs the permission
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Solicitud de permiso")
+                        .setMessage("La aplicación necesita acceso a la programación de alarmas exactas para brindarle la mejor experiencia. ¿Desea otorgar el permiso?")
+                        .setPositiveButton("Permitir", (dialog, which) -> {
+
+                            // Request the permission
+                            requestPermissions(new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, REQUEST_CODE_SCHEDULE_EXACT_ALARM);
+                        })
+                        .setNegativeButton("Cancelar", (dialog, which) -> {
+                            // Handle the case where the user denies the permission
+                            Toast.makeText(this, "No se pudo acceder a la programación de alarmas exactas", Toast.LENGTH_SHORT).show();
+                        })
+                        .show();
+            } else {
+                // Permission already granted, proceed with using the permission
+                //  scheduleExactAlarm();
+            }
+        } else {
+            // Permission not available for older Android versions
+            Toast.makeText(this, "La programación de alarmas exactas no es compatible con esta versión de Android", Toast.LENGTH_SHORT).show();
+        }
+        //compruebaPermiso();
+        //compruebaPermiso2();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,10 +217,10 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         getVersionActual(context);
 
 // Solicitar el permiso al usuario
-        ActivityCompat.requestPermissions(this,
+     /*   ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM},
                 REQUEST_CODE_SCHEDULE_EXACT_ALARM);
-
+*/
 
         img_usb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,6 +268,16 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             edtPass.setText(password);
             recordar.setEnabled(true);
             recordar.setChecked(true);
+            try {
+                loguin(edtEmail.getText().toString(),edtPass.getText().toString());
+                alerta.show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            //loader.setVisibility(View.VISIBLE);
+
         }
 
         //SP_Helper sp_helper = new SP_Helper();
@@ -294,6 +351,8 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         }
 
     }
+
+
         public boolean ObtenerTokenPaises() throws JSONException, UnsupportedEncodingException {
             JSONObject oJSONObject = new JSONObject();
             String token = "_wYcvMzK5nvKfyZf_OInEhD0FfhCa_NMRZcQN1EAeZIJkpk0ACJ69-u6vASYrR2XF50";
@@ -360,7 +419,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
     }
 
     // Manejar la respuesta del usuario
-    @Override
+ /*   @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -368,12 +427,14 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // El usuario ha concedido el permiso
                 // Puedes configurar alarmas exactas
+                Toast.makeText(this, "Permission Acpetado", Toast.LENGTH_SHORT).show();
             } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
                 // El usuario ha denegado el permiso
                 // No puedes configurar alarmas exactas
             }
         }
-    }
+    }*/
     public String getVersionActual(Context ctx){
         try {
             return ctx.getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -775,6 +836,24 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         return false;
     }
 
+    private void verificarPermisos(){
+        int PermisoNotificaciones =ContextCompat.checkSelfPermission(this,Manifest.permission.POST_NOTIFICATIONS);
+      //  int PermisoLlamadas = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_PHONE_STATE);
+        int PermisoUbicacion = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION);
+        int PermisoAlarm = ContextCompat.checkSelfPermission(this,Manifest.permission.SCHEDULE_EXACT_ALARM);
+        int PermisoCamara = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA);
+
+        if ( PermisoNotificaciones == PackageManager.PERMISSION_GRANTED &&
+            PermisoUbicacion == PackageManager.PERMISSION_GRANTED && PermisoAlarm == PackageManager.PERMISSION_GRANTED &&
+            PermisoCamara ==PackageManager.PERMISSION_GRANTED){
+            //Toast.makeText(this, "Permission Oks", Toast.LENGTH_SHORT).show();
+        }else{
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.ACCESS_FINE_LOCATION,
+                                            Manifest.permission.SCHEDULE_EXACT_ALARM,Manifest.permission.CAMERA},REQUEST_CODE);
+        }
+
+
+    }
     private void compruebaPermiso() {
         for (String cad: grupoPermisos){
             if (ContextCompat.checkSelfPermission(this,cad) == PackageManager.PERMISSION_DENIED){
@@ -784,6 +863,22 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                             Loguin_new.this,
                             new String[] {cad},
                             RQC);
+
+                }
+            }
+          //  compruebaPermiso2();
+        }
+    }
+
+    private void compruebaPermiso2() {
+        for (String cad: grupoPermisos2){
+            if (ContextCompat.checkSelfPermission(this,cad) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    //requestPermissions(new String[]{cad}, RQC);
+                    ActivityCompat.requestPermissions(
+                            Loguin_new.this,
+                            new String[] {cad},
+                            RQC2);
 
                 }
             }

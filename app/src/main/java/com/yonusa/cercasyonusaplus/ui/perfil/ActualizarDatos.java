@@ -106,10 +106,12 @@ public class ActualizarDatos extends AppCompatActivity {
         String apellido_t =  misPreferencias.getString("apellido","0");
         String pais_t = misPreferencias.getString("pais","");
         String estado_t = misPreferencias.getString("estado","");
+        String lada_t = misPreferencias.getString("lada","");
 
         name.setText(nombre_t);
         lastName.setText(apellido_t);
         cellPhone.setText(telefono_t);
+        codigo_pais.setText(lada_t);
 
         paises.setText(pais_t);
         localidades.setText(estado_t);
@@ -124,7 +126,7 @@ public class ActualizarDatos extends AppCompatActivity {
                     if (complete){
                         //   loader.setVisibility(View.VISIBLE);
                         alerta3.show();
-                        Actualizar_perfil(idUser_t.toString(), name.getText().toString(), lastName.getText().toString(), cellPhone.getText().toString(),
+                        Actualizar_perfil(idUser_t.toString(), name.getText().toString(), lastName.getText().toString(),codigo_pais.getText().toString(), cellPhone.getText().toString(),
                                 paises.getText().toString(), localidades.getText().toString());
                     }
 
@@ -196,13 +198,13 @@ public class ActualizarDatos extends AppCompatActivity {
             return true;
         }
     }
-    public boolean Actualizar_perfil(String userid,String nombre,String apellidos,String telefono,String pais,String estado) throws JSONException, UnsupportedEncodingException {
+    public boolean Actualizar_perfil(String userid,String nombre,String apellidos,String lada, String telefono,String pais,String estado) throws JSONException, UnsupportedEncodingException {
         alerta3.show();
         JSONObject oJSONObject = new JSONObject();
         oJSONObject.put("usuarioId", userid);
         oJSONObject.put("nombre", nombre);
         oJSONObject.put("apellidos", apellidos);
-        oJSONObject.put("telefono", telefono);
+        oJSONObject.put("telefono",lada+" "+ telefono);
         oJSONObject.put("pais", pais);
         oJSONObject.put("estado", estado);
 
@@ -235,6 +237,7 @@ public class ActualizarDatos extends AppCompatActivity {
                                 editor.putString("pais", pais);
                                 editor.putString("estado", estado);
                                 editor.putString("telefono",telefono);
+                                editor.putString("lada",lada);
                                 editor.commit();
 
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

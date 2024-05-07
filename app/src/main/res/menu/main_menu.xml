@@ -103,7 +103,7 @@
     <item android:title="Desarrollo">
         <menu>
             <item
-                android:title="Versión 2.030424.29"
+                android:title="Versión 2.070524.35"
                 android:icon="@drawable/ic_bug"/>
             <item
                 android:id="@+id/nav_comentarios"
@@ -114,6 +114,7 @@
                 android:id="@+id/nav_usbserial"
                 android:iconTint="@color/white"
                 android:icon="@drawable/ic_usb"
+                android:visible="false"
                 android:title="Modo USBSerial" />
 
         </menu>

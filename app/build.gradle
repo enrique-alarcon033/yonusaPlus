@@ -19,8 +19,8 @@ android {
         applicationId 'com.yonusa.cercasplus'
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 29
-        versionName "2.030424.29"
+        versionCode 35
+        versionName "2.070524.35"
 
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -186,7 +186,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
 
     //libreria para la comuniciacion seria
-    implementation files('libs/usbserial1.jar')
+    //implementation files('libs/usbserial1.jar')
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutinesVersion"

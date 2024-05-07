@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:orientation="vertical"
-
     android:elevation="10dp"
     android:background="@color/pressed_bg"
     android:gravity="bottom">
@@ -36,44 +35,44 @@ android:background="@color/colorPrimary"
             android:id="@+id/apellido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:text="Nurko"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/nombre"
-            app:layout_constraintTop_toBottomOf="@+id/user_correo" />
+            app:layout_constraintTop_toTopOf="@+id/nombre" />
 
         <TextView
             android:id="@+id/nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Samuel"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
+            android:text="Samuel"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_correo" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/user_correo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
             android:layout_weight="1"
-            android:text="paniagua@paniagua.com"
+            android:text="Samuel@yonusa.com"
             android:textAlignment="center"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Usuario:"
-            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -84,12 +83,12 @@ android:background="@color/colorPrimary"
             android:id="@+id/img_alerta"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:visibility="gone"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_alerta" />
+            app:srcCompat="@drawable/ic_advertencia" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -83,16 +84,26 @@ public class GetYonusaWifiActivity extends AppCompatActivity {
                 }
             }, 1000);
             String wifi = getCurrentSsid(context);
+
             if (wifi.contains("YONUSA")) {
                 tv_title_step_1.setText("Ya estás conectado a");
                 ivAddWifi.setImageResource(R.drawable.ico_on_wifi);
                 tvWifiNameStep1.setText(wifi);
                 navBarRightButton.setVisibility(View.VISIBLE);
+
+                String str = wifi;
+                String resultado = str.substring(9, 26); // substraccion de la mac
+
+                SharedPreferences sharedPref2 =getSharedPreferences("Datos_Tarjeta",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = sharedPref2.edit();
+                editor2.putString("MAC", resultado);
+                editor2.commit();
+
             } else {
                 tvWifiNameStep1.setText("\"YONUSA\"");
                 final AlertDialog dialog = new AlertDialog.Builder(context)
                         .setTitle(R.string.alert_title_atention)
-                        .setMessage("Recuerda conectarte primero a la Red YONUSA")
+                        .setMessage("Recuerda conectarte primero a la Red YONUSA y tener la ubicacion encendida")
                         .setPositiveButton(R.string.ok_alert_text, null)
                         .show();
                 Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);

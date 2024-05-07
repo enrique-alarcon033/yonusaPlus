@@ -185,7 +185,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                 i.setData(Uri.parse(url));
                 startActivity(i);
             });
-           // alert.show();
+            alert.show();
         }
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -202,6 +202,15 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         if (pais_t.equals("")|| estado_t.equals("")){
             img_alerta.setVisibility(View.VISIBLE);
         }
+
+        img_alerta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this,"Acompleta los datos de tu cuenta",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MiCuenta.class);
+                startActivity(intent);
+            }
+        });
         drawerToggle= new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -465,11 +474,11 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
 
     public void toGetDevices() {
+        alerta.show();
         HomeScreenRequest mHomeScreenRequest = new HomeScreenRequest();
         mHomeScreenRequest.setUsuarioId(userId);
-
         getDevices(mHomeScreenRequest);
-        alerta.show();
+
     }
 
     public void getDevices(HomeScreenRequest homeScreenRequest) {
