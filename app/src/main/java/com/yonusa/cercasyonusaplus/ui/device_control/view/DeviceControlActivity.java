@@ -1,5 +1,6 @@
 package com.yonusa.cercasyonusaplus.ui.device_control.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,20 +14,35 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
 import com.novoda.merlin.Bindable;
 import com.novoda.merlin.Connectable;
 import com.novoda.merlin.Disconnectable;
@@ -39,15 +55,27 @@ import com.yonusa.cercasyonusaplus.api.ApiManager;
 import com.yonusa.cercasyonusaplus.api.BaseResponse;
 import com.yonusa.cercasyonusaplus.databinding.DeviceControlMainBinding;
 import com.yonusa.cercasyonusaplus.mqtt.Publisher;
+import com.yonusa.cercasyonusaplus.ui.add_devices.ethernet.agregar_ethernet;
+import com.yonusa.cercasyonusaplus.ui.beneficiarios.Lista_beneficiarios;
+import com.yonusa.cercasyonusaplus.ui.beneficiarios.llamada;
+import com.yonusa.cercasyonusaplus.ui.device_control.models.eventos_model;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.request.GetDeviceControlsRequest;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.request.GetEventsByDateRequest;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.request.SetNewControlNameRequest;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.response.Controls;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.response.GetDeviceControlsResponse;
 import com.yonusa.cercasyonusaplus.ui.device_control.models.response.GetEventsByDateResponse;
+import com.yonusa.cercasyonusaplus.ui.device_control.models.response.Historial;
 import com.yonusa.cercasyonusaplus.ui.device_control.view.Adapters.DeviceControlAdapter;
+import com.yonusa.cercasyonusaplus.ui.device_control.view.Adapters.eventos_adapter;
+import com.yonusa.cercasyonusaplus.ui.homeScreen.view.HomeActivity;
 import com.yonusa.cercasyonusaplus.ui.login.view.Loguin_new;
+import com.yonusa.cercasyonusaplus.ui.perfil.MiCuenta;
 import com.yonusa.cercasyonusaplus.ui.rutinas.lista_rutinas;
+import com.yonusa.cercasyonusaplus.ui.suscripciones.CancelarSuscripcion;
+import com.yonusa.cercasyonusaplus.ui.suscripciones.MisTarjetas;
+import com.yonusa.cercasyonusaplus.ui.suscripciones.Paquetes;
+import com.yonusa.cercasyonusaplus.ui.usbSerial.Controles;
 import com.yonusa.cercasyonusaplus.ui.view.view.userList.userAdministration;
 import com.yonusa.cercasyonusaplus.utilities.catalogs.Constants;
 import com.yonusa.cercasyonusaplus.utilities.catalogs.ErrorCodes;
@@ -55,11 +83,22 @@ import com.yonusa.cercasyonusaplus.utilities.catalogs.Mqtt_CMD;
 import com.yonusa.cercasyonusaplus.utilities.catalogs.SP_Dictionary;
 import com.yonusa.cercasyonusaplus.utilities.helpers.GeneralHelpers;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -77,7 +116,7 @@ public class DeviceControlActivity extends AppCompatActivity
     private GetDeviceControlsResponse deviceControlsResponse;
     private ApiManager apiManager;
     private ImageView userAdm;
-    private TextView tvEventDesc, tvEventName, tvDate,rutinas,botones;
+    private TextView tvEventDesc, tvEventName, tvDate, rutinas, botones;
     private RelativeLayout rlControlDescription;
     private SharedPreferences prefs;
     private MediaPlayer mediaPlayer;
@@ -90,14 +129,26 @@ public class DeviceControlActivity extends AppCompatActivity
     private String deviceName;
     private String model;
     private String mac;
-    private Boolean status, isLongPress = false;
+    private Boolean status, corriente, statusAlarma, isLongPress = false;
     private SimpleDateFormat sdfYMDTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy / MM / dd");
     private Context context;
+    BottomNavigationView barraNav;
+
+    private ArrayList<eventos_model> myDatasetCoAcep2;
+    private RecyclerView mRecyclerViewAceptadas2;
+    private RecyclerView.Adapter mAdaptercoAcep2;
+    private RecyclerView.LayoutManager mLayoutManagercoAcep2;
+
+    Toolbar toolbar;
 
     private Merlin merlin;
+    TextView Tv_wifi, Tv_corriente, Tv_alarma, Nombre_cerco, Tv_mac, Tv_preguntas;
 
-    android.app.AlertDialog dialog_controles,dialog_comando;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+    android.app.AlertDialog dialog_controles, dialog_comando;
 
 
     enum ControlOptions {
@@ -114,6 +165,7 @@ public class DeviceControlActivity extends AppCompatActivity
     }
 
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,12 +173,23 @@ public class DeviceControlActivity extends AppCompatActivity
         this.context = this;
 
         binding = DataBindingUtil.setContentView(this, R.layout.device_control_main);
-
         prefs = this.getSharedPreferences(SP_Dictionary.USER_INFO, Context.MODE_PRIVATE);
-
         Log.i(TAG, "On Create");
-        setTitle("Device control");
-        getSupportActionBar().hide();
+        //  setTitle("Device control");
+        //  getSupportActionBar().hide();
+
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
+        //actionBar.setSubtitle("   Design a custom Action Bar");
+        actionBar.setDisplayShowHomeEnabled(true); // Enable home button
+        actionBar.setDisplayHomeAsUpEnabled(true); // Enable back button (if needed)
+        //  actionBar.setIcon(R.drawable.logo_yonusa_blanco); // Set the icon
+        actionBar.setIcon(R.drawable.logo_yonusa_blanco);
+        // methods to display the icon in the ActionBar
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
 
         merlin = new Merlin.Builder().withConnectableCallbacks()
                 .withDisconnectableCallbacks()
@@ -144,6 +207,39 @@ public class DeviceControlActivity extends AppCompatActivity
         deviceName = getIntent().getStringExtra("DEVICE_NAME");
         mac = getIntent().getStringExtra("DEVICE_MAC");
         status = getIntent().getBooleanExtra("DEVICE_STATUS", false);
+        corriente = getIntent().getBooleanExtra("DEVICE_CORRIENTE", false);
+        statusAlarma = getIntent().getBooleanExtra("STATUS_ALARMA", false);
+
+        Tv_wifi = (TextView) findViewById(R.id.tv_wifi);
+        Tv_corriente = (TextView) findViewById(R.id.tv_corriente);
+        Tv_alarma = (TextView) findViewById(R.id.tv_alarma);
+        Nombre_cerco = (TextView) findViewById(R.id.tv_nombre_cerco);
+        Tv_mac = (TextView) findViewById(R.id.tv_MAC);
+        Tv_preguntas = (TextView) findViewById(R.id.tv_pregunas);
+
+        mRecyclerViewAceptadas2 = (RecyclerView) findViewById(R.id.lista_eventos);
+        mRecyclerViewAceptadas2.setHasFixedSize(true);
+        mLayoutManagercoAcep2 = new GridLayoutManager(getApplication(), 1);
+        mRecyclerViewAceptadas2.setLayoutManager(mLayoutManagercoAcep2);
+
+        Tv_preguntas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogPreguntas(getApplicationContext(), "Hola");
+            }
+        });
+
+        Nombre_cerco.setText(deviceName);
+        Tv_mac.setText(mac);
+        if (status.equals(true)) {
+            Tv_wifi.setBackgroundResource(R.drawable.ic_wifi_on);
+        }
+        if (corriente.equals(true)) {
+            Tv_corriente.setBackgroundResource(R.drawable.ic_sistema_on);
+        }
+        if (statusAlarma.equals(true)) {
+            Tv_alarma.setBackgroundResource(R.drawable.ic_sirena_on);
+        }
 
         rutinas = (TextView) findViewById(R.id.tv_rutinas);
         botones = (TextView) findViewById(R.id.tv_botones);
@@ -186,28 +282,120 @@ public class DeviceControlActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        rutinas.setOnClickListener(new View.OnClickListener() {
+        try {
+            obtener_eventos5(cercaId);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+  /*      rutinas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceControlActivity.this, lista_rutinas.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
-        botones.setOnClickListener(new View.OnClickListener() {
+      /*  botones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceControlActivity.this, Botones.class);
                 startActivity(intent);
+            }
+        });*/
+
+    }
+
+    private void refreshDataset_aceptadas2() {
+        if (mRecyclerViewAceptadas2 == null)
+            return;
+
+        if (mAdaptercoAcep2 == null) {
+            mAdaptercoAcep2 = new eventos_adapter(getApplication(), myDatasetCoAcep2);
+            mRecyclerViewAceptadas2.setAdapter(mAdaptercoAcep2);
+        } else {
+            mAdaptercoAcep2.notifyDataSetChanged();
+        }
+    }
+
+    public void showDialogPreguntas(Context context, String message) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        //builder.setTitle("Dejanos tus comentarios");
+
+        View dialogLayout = inflater.inflate(R.layout.dialog_preguntas,
+                null);
+
+        @SuppressLint("MissingInflatedId") final Button btnCancelar = dialogLayout.findViewById(R.id.btn_despues);
+        //final ImageView img_rating = dialogLayout.findViewById(R.id.img_rating);
+        final android.app.AlertDialog mdialog = builder.show();
+        builder.setView(dialogLayout);
+        builder.show();
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+
             }
         });
 
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.nav_menu, menu);
+        if (rol == 1) {
+            menu.getItem(2).setVisible(true);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // methods to control the operations that will
+    // happen when user clicks on the action buttons
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.historial:
+                //Toast.makeText(this, "Historial", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DeviceControlActivity.this, EventsByDate.class);
+                intent.putExtra("DEVICE_ID", cercaId);
+                startActivity(intent);
+                break;
+            case R.id.rutinas:
+                //  Toast.makeText(this, "Rutinas", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(DeviceControlActivity.this, lista_rutinas.class);
+                startActivity(intent2);
+                break;
+            case R.id.invitados:
+                Intent userAdmin = new Intent(this, userAdministration.class);
+                userAdmin.putExtra("DEVICE_ID", cercaId);
+                startActivity(userAdmin);
+
+                // overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+                break;
+            case R.id.botones:
+                //Toast.makeText(this, "Botones", Toast.LENGTH_SHORT).show();
+                Intent intent4 = new Intent(DeviceControlActivity.this, Botones.class);
+                startActivity(intent4);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        if (merlin!= null){
+        if (merlin != null) {
             merlin.bind();
         }
         statusCheck();
@@ -303,7 +491,7 @@ public class DeviceControlActivity extends AppCompatActivity
     }
 
     public void changeStatusControl(Controls control) {
-       // dialog_comando.show();
+        // dialog_comando.show();
         sendMqttMessage(control.getControlId(), control.getEstadoControl());
         SharedPreferences prefs = getSharedPreferences("Botones", MODE_PRIVATE);
         String puerta = prefs.getString("puerta", "0");
@@ -319,10 +507,10 @@ public class DeviceControlActivity extends AppCompatActivity
             if (control.getControlId() == Constants.DOOR_ID) {
                 Toast.makeText(DeviceControlActivity.this, getString(R.string.door_on_message_seconds), Toast.LENGTH_LONG).show();
                 new doorInteraction(control).start();
-            } else if (control.getControlId()==Constants.AUX1_ID && aux1.equals("1")){
+            } else if (control.getControlId() == Constants.AUX1_ID && aux1.equals("1")) {
                 Toast.makeText(DeviceControlActivity.this, "el aux1 se apagar en 5 seg", Toast.LENGTH_LONG).show();
                 new aux1Interaction(control).start();
-            }else if(control.getControlId()==Constants.AUX2_ID && aux2.equals("1")){
+            } else if (control.getControlId() == Constants.AUX2_ID && aux2.equals("1")) {
                 Toast.makeText(DeviceControlActivity.this, "el aux2 se apagar en 5 seg", Toast.LENGTH_LONG).show();
                 new aux2Interaction(control).start();
             }
@@ -334,6 +522,7 @@ public class DeviceControlActivity extends AppCompatActivity
         GetDeviceControlsRequest getDiv = new GetDeviceControlsRequest();
         getDiv.setCercaId(cercaId);
         getDiv.setUsuarioId(uuid);
+
         apiManager = ApiConstants.getAPIManager();
         Call<GetDeviceControlsResponse> call = apiManager.getDeviceControls(getDiv);
         call.enqueue(new Callback<GetDeviceControlsResponse>() {
@@ -567,12 +756,12 @@ public class DeviceControlActivity extends AppCompatActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-             dialog_comando.dismiss();
+                dialog_comando.dismiss();
             }
-        }, 3500);
+        }, 1500);
         //dialog_comando.dismiss();
-     //   Publicar publicar = new Publicar();
-       // publicar.SendMessage(this,msg,mac);
+        //   Publicar publicar = new Publicar();
+        // publicar.SendMessage(this,msg,mac);
     }
 
     private String getCurrenDateWithTime() {
@@ -679,12 +868,13 @@ public class DeviceControlActivity extends AppCompatActivity
 
 
     @Override
-    protected void  onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
-        if(merlin != null){
+        if (merlin != null) {
             merlin.unbind();
         }
     }
+
     @Override
     public void onBind(NetworkStatus networkStatus) {
         onDisconnect();
@@ -708,6 +898,7 @@ public class DeviceControlActivity extends AppCompatActivity
             }
         });
     }
+
     private void snack_error() {
         Snacky.builder()
                 .setBackgroundColor(Color.parseColor("#FF600A"))
@@ -729,7 +920,8 @@ public class DeviceControlActivity extends AppCompatActivity
                 .show();
 
     }
-    private void snack_wifi_off(){
+
+    private void snack_wifi_off() {
         Snackbar warningSnackBar = Snacky.builder()
                 .setActivity(DeviceControlActivity.this)
                 .setText("En este momento no tienes Conexión")
@@ -753,4 +945,142 @@ public class DeviceControlActivity extends AppCompatActivity
 
     }
 
+    public boolean obtener_eventos5(String cerca) throws JSONException, UnsupportedEncodingException {
+        myDatasetCoAcep2 = new ArrayList<eventos_model>();
+
+        SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
+        String id_user = misPreferencias.getString("usuarioId", "0");
+        String token = misPreferencias.getString("accessToken", "0");
+        String aplicacion = "application/json";
+        JSONObject oJSONObject = new JSONObject();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+
+        String fecha = dateFormat.format(date);
+        oJSONObject.put("fechaInicial", "2023-03-01");
+        oJSONObject.put("fechaFinal", fecha);
+        oJSONObject.put("usuarioId", id_user);
+        oJSONObject.put("cercaId", cerca);
+        //   oJSONObject.put("coordenates",_contrasena);
+        ByteArrayEntity oEntity = new ByteArrayEntity(oJSONObject.toString().getBytes("UTF-8"));
+        oEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        //  oEntity.setContentEncoding(new BasicHeader(HttpHeaders.AUTHORIZATION,  token));
+
+        //  Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), oEntity.toString(), Toast.LENGTH_LONG).show();
+        //      oEntity.setContentType("Authorization", "Bearer "+token);
+
+        AsyncHttpClient oHttpClient = new AsyncHttpClient();
+        oHttpClient.addHeader(
+                "Authorization",
+                token);
+        //cambiar varible
+        RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
+                "http://payonusa.com/api/ObtenerHistorialPorFecha", (HttpEntity) oEntity, "application/json", new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        // called before request is started
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        System.out.println(statusCode);
+                        System.out.println(responseBody);
+
+                        try {
+                            String content = new String(responseBody, "UTF-8");
+                            JSONObject obj = new JSONObject(content);
+
+                            JSONArray jsonArray = obj.getJSONArray("Historial");
+                            for (int i = 0; i < 4; i++) {
+                                try {
+                                    JSONObject jsonObjectHijo = jsonArray.getJSONObject(i);
+                                    if (jsonObjectHijo != null) {
+                                        //Armamos un objeto Photo con el Title y la URL de cada JSONObject
+                                        eventos_model photo = new eventos_model();
+
+
+                                        if (jsonObjectHijo.has("TextoMostrar"))
+                                            photo.setTextoMostrar(jsonObjectHijo.getString("TextoMostrar"));
+
+                                        if (jsonObjectHijo.has("Nombre"))
+                                            photo.setNombre(jsonObjectHijo.getString("Nombre"));
+
+                                        if (jsonObjectHijo.has("Apellidos"))
+                                            photo.setAlarcon(jsonObjectHijo.getString("Apellidos"));
+
+                                        if (jsonObjectHijo.has("FechaRegistroDato"))
+                                            photo.setFechaRegistro(jsonObjectHijo.getString("FechaRegistroDato"));
+
+
+                                        myDatasetCoAcep2.add(photo);
+
+
+                                    }
+                                    //   Toast.makeText(getApplicationContext(), String.valueOf(jsonObjectHijo), Toast.LENGTH_LONG).show();
+
+                                } catch (JSONException e) {
+                                    Log.e("Parser JSON", e.toString());
+                                } finally {
+                                    //Finalmente si hemos cargado datos en el Dataset
+                                    // entonces refrescamos
+                                    //progressplanes.setVisibility(View.GONE);
+                                    if (myDatasetCoAcep2.size() > 0) {
+                                        //  texto2.setVisibility(View.VISIBLE);
+                                        //   aceptadas_s.setVisibility(View.GONE);
+                                        refreshDataset_aceptadas2();
+                                    } else {
+
+                                        //  texto2.setVisibility(View.VISIBLE);
+                                        mRecyclerViewAceptadas2.setVisibility(View.GONE);
+                                        //     aceptadas_s.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                            if (jsonArray.length() > 0) {
+
+                            } else {
+//                                texto.setVisibility(View.VISIBLE);
+                            }
+
+                            //  Toast.makeText(getApplicationContext(), obj.getString("listConsents"), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "404 !", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "500 !", Toast.LENGTH_LONG).show();
+                            //sin_tarjetas();
+                        } else if (statusCode == 403) {
+                            Toast.makeText(getApplicationContext(), "403 !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public boolean getUseSynchronousMode() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onRetry(int retryNo) {
+                        // called when request is retried
+                        System.out.println(retryNo);
+                    }
+                });
+
+        return false;
+
+    }
 }

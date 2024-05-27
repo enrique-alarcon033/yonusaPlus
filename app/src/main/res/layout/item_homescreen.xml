@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+ xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cell_card"
     android:layout_width="match_parent"
     android:layout_height="76dp"
     android:background="@color/device_disable"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="10dp"
 
@@ -13,122 +16,159 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cell_container"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="76dp"
         android:layout_margin="0dp"
         android:orientation="horizontal"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/circle_background"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="13dp"
-            android:background="@drawable/shape_circle"
-            android:padding="2dp"
-            android:visibility="gone"
-            android:scaleType="centerInside"
-            android:src="@drawable/ico_fence_disable" />
-
-        <ImageView
-            android:id="@+id/device_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignStart="@+id/circle_background"
-            android:layout_alignTop="@+id/circle_background"
-
-            android:layout_alignEnd="@+id/circle_background"
-            android:layout_alignBottom="@+id/circle_background"
-            android:contentDescription="@string/icn_device"
-            android:src="@drawable/ic_verde"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_status"
-            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
-
-        <View
-            android:id="@+id/top_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/circle_background"
-            android:background="@drawable/rounded_login_container"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/circle_background" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/icn_status"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/icn_status"
-            android:padding="2dp"
-            android:src="@drawable/ic_cerca"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/circle_background"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/shape_circle"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ico_fence_disable"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-        <TextView
-            android:id="@+id/tv_model_id"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:layout_toStartOf="@+id/icn_status"
-            android:layout_toEndOf="@id/circle_background"
-            android:paddingStart="8dp"
+            <ImageView
+                android:id="@+id/device_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignStart="@+id/circle_background"
+                android:layout_alignTop="@+id/circle_background"
+                android:layout_alignEnd="@+id/circle_background"
+                android:layout_alignBottom="@+id/circle_background"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:contentDescription="@string/icn_device"
+                android:src="@drawable/ic_wifi_offi"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/tv_status"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            android:paddingEnd="8dp"
-            android:text="@string/model_id"
-            android:textAlignment="viewStart"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            <View
+                android:id="@+id/top_view"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@id/circle_background"
+                android:background="@drawable/rounded_login_container"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/circle_background" />
 
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="13dp"
-            android:layout_below="@id/tv_model_id"
-            android:layout_alignParentEnd="true"
-            android:text="Conectado"
-            android:textAllCaps="false"
-            android:textColor="@color/negro"
+            <ImageView
+                android:id="@+id/icn_status"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/icn_status"
+                android:padding="2dp"
+                android:src="@drawable/ic_cerca"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            android:layout_marginRight="10dp"
-            android:textSize="10sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_model_id"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_toStartOf="@+id/icn_status"
+                android:layout_toEndOf="@id/circle_background"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/model_id"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_device_name"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@id/top_view"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/device_name"
-            android:textAllCaps="false"
-            android:textColor="@color/negro"
-            android:textSize="20sp"
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="13dp"
+                android:layout_below="@id/tv_model_id"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:text="Desconectado"
+                android:textAllCaps="false"
+                android:textColor="@color/negro"
+                android:textSize="10sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/icn_status"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/top_view"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/device_name"
+                android:textAllCaps="false"
+                android:textColor="@color/negro"
+                android:textSize="20sp"
 
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/icn_status"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="31dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:background="@drawable/fence_izq"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView51"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/fence_der"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_device_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_estatus_sistema"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/ic_sistema_off"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView4" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

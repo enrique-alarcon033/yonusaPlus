@@ -19,9 +19,8 @@ android {
         applicationId 'com.yonusa.cercasplus'
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 35
-        versionName "2.070524.35"
-
+        versionCode 37
+        versionName "2.270524.37"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

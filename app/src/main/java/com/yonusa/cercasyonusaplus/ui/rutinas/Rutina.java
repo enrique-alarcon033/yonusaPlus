@@ -4,15 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -51,8 +56,9 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     private int horar,minutos;
     RecyclerView recyclerView;
     CantidadAdapter adapter;
-
+    Spinner comandos;
     Switch swl;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +71,42 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
         guardar =(Button) findViewById(R.id.guardar);
         nombre= (EditText)findViewById(R.id.nombre_rutina);
         comando_ejecutar = (TextView) findViewById(R.id.comando_ejecutar);
+        comandos = (Spinner) findViewById(R.id.spinner_basic_comandos);
+        setupSpinnerBasic();
 
+        comandos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                texto_control.setText(item);
+                if (item.equals("Cerca")){
+                    comando_ejecutar.setText("@FENCE_OFF");
+                    img_icon.setBackgroundResource(R.drawable.btn_fence_off);
+                    swl.setChecked(false);
+                    swl.setText("Apagar");
+                }else if (item.equals("Luces")){
+                    comando_ejecutar.setText("@LIGHT_OFF");
+                    img_icon.setBackgroundResource(R.drawable.btn_luces_off);
+                    swl.setChecked(false);
+                    swl.setText("Apagar");
+                }else if (item.equals("Aux1")){
+                    comando_ejecutar.setText("@AUX1_OFF");
+                    img_icon.setBackgroundResource(R.drawable.btn_aux_off);
+                    swl.setChecked(false);
+                    swl.setText("Apagar");
+                }else if (item.equals("Aux2")){
+                    comando_ejecutar.setText("@AUX2_OFF");
+                    img_icon.setBackgroundResource(R.drawable.btn_aux_off);
+                    swl.setChecked(false);
+                    swl.setText("Apagar");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         btn_hora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,40 +126,24 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
 
         recyclerView=(RecyclerView)findViewById(R.id.dias);
         setRecycler();
-        String valor = getIntent().getStringExtra("comando");
-        if (valor.equals("0")){
-            comando_ejecutar.setText("@FENCE_OFF");
-        }else if (valor.equals("1")){
-            comando_ejecutar.setText("@PANIC_OFF");
-        }else if (valor.equals("2")){
-            comando_ejecutar.setText("@DOOR_OFF");
-        }else if (valor.equals("3")){
-            comando_ejecutar.setText("@LIGHT_OFF");
-        }else if (valor.equals("4")){
-            comando_ejecutar.setText("@AUX1_OFF");
-        }else if (valor.equals("5")){
-            comando_ejecutar.setText("@AUX2_OFF");
-        }
+       // String valor = getIntent().getStringExtra("comando");
+
 
 
         swl = (Switch) findViewById(R.id.switch1);
         swl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String valor = getIntent().getStringExtra("comando");
+                String valor = texto_control.getText().toString();
                 String comando = "";
-                if (valor.equals("0")){
+                if (valor.equals("Cerca")){
                     ValidarSwitch(v);
-                }else if (valor.equals("1")){
-                    ValidarSwitch2(v);
-                }else if (valor.equals("2")){
-                    ValidarSwitch3(v);
-                    swl.setText("Cerrar Puerta");
-                }else if (valor.equals("3")){
+                }else if (valor.equals("Luces")){
                     ValidarSwitch4(v);
-                }else if (valor.equals("4")){
+                }else if (valor.equals("Aux1")){
                     ValidarSwitch5(v);
-                }else if (valor.equals("5")){
+                }else if (valor.equals("Aux2" +
+                        "")){
                     ValidarSwitch6(v);
                 }
             }
@@ -155,7 +180,7 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
         });
 
         //String valor = getIntent().getStringExtra("comando");
-        String comando = "";
+     /*  String comando = "";
         if (valor.equals("0")){
              img_icon.setBackgroundResource(R.drawable.fence2_off);
              texto_control.setText("Cerco");
@@ -177,7 +202,7 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
         }else if (valor.equals("5")){
             img_icon.setBackgroundResource(R.drawable.aux_disable);
             texto_control.setText("Aux 2");
-        }
+        }*/
 
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,13 +213,19 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
                     if(hora.getText().toString().isEmpty()){
                         Toast.makeText(getApplicationContext(), "Asigna una hora de ejecución a tu rutina", Toast.LENGTH_LONG).show();
                     }else{
-                    try {
-                        crear_rutina(hora.getText().toString(),nombre.getText().toString(),comando_ejecutar.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
+                        if (texto_control.getText().toString().equals("Seleccionar boton")){
+                            Toast.makeText(getApplicationContext(), "Selecciona un control a programar", Toast.LENGTH_LONG).show();
+                        }else{
+
+                            try {
+                                crear_rutina(hora.getText().toString(),nombre.getText().toString(),comando_ejecutar.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                     }
                 }
             }
@@ -203,6 +234,13 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
       //  Toast.makeText(getApplicationContext(), valor, Toast.LENGTH_LONG).show();
     }
 
+    private void setupSpinnerBasic() {
+        @SuppressLint("WrongViewCast") Spinner spinner = findViewById(R.id.spinner_basic_comandos);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.Comandos, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
     private ArrayList<String> getCantidadDatos(){
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Monday");
@@ -216,7 +254,7 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     }
     private void setRecycler() {
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,4));
         adapter= new CantidadAdapter(this,getCantidadDatos(),this);
         recyclerView.setAdapter(adapter);
     }
@@ -242,11 +280,11 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     public  void ValidarSwitch(View view){
         if (swl.isChecked()) {
             swl.setText("Encender");
-            img_icon.setBackgroundResource(R.drawable.fence2_on);
+            img_icon.setBackgroundResource(R.drawable.btn_fence_on);
             comando_ejecutar.setText("@FENCE_ON");
         }else{
             swl.setText("Apagar");
-            img_icon.setBackgroundResource(R.drawable.fence2_off);
+            img_icon.setBackgroundResource(R.drawable.btn_fence_off);
             comando_ejecutar.setText("@FENCE_OFF");
         }
     }
@@ -278,11 +316,11 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     public  void ValidarSwitch4(View view){
         if (swl.isChecked()) {
             swl.setText("Encender");
-            img_icon.setBackgroundResource(R.drawable.lights_off);
+            img_icon.setBackgroundResource(R.drawable.btn_luces_on);
             comando_ejecutar.setText("@LIGHT_ON");
         }else{
             swl.setText("Apagar");
-            img_icon.setBackgroundResource(R.drawable.lights_on);
+            img_icon.setBackgroundResource(R.drawable.btn_luces_off);
             comando_ejecutar.setText("@LIGHT_OFF");
         }
     }
@@ -290,11 +328,11 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     public  void ValidarSwitch5(View view){
         if (swl.isChecked()) {
             swl.setText("Encender");
-            img_icon.setBackgroundResource(R.drawable.aux_on);
+            img_icon.setBackgroundResource(R.drawable.btn_aux_on);
             comando_ejecutar.setText("@AUX1_ON");
         }else{
             swl.setText("Apagar");
-            img_icon.setBackgroundResource(R.drawable.aux_disable);
+            img_icon.setBackgroundResource(R.drawable.btn_aux_off);
             comando_ejecutar.setText("@AUX1_OFF");
         }
     }
@@ -302,11 +340,11 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
     public  void ValidarSwitch6(View view){
         if (swl.isChecked()) {
             swl.setText("Encender");
-            img_icon.setBackgroundResource(R.drawable.aux_on);
+            img_icon.setBackgroundResource(R.drawable.btn_aux_on);
             comando_ejecutar.setText("@AUX2_ON");
         }else{
             swl.setText("Apagar");
-            img_icon.setBackgroundResource(R.drawable.aux_disable);
+            img_icon.setBackgroundResource(R.drawable.btn_aux_off);
             comando_ejecutar.setText("@AUX2_OFF");
         }
     }
@@ -408,6 +446,8 @@ public class  Rutina extends AppCompatActivity  implements CantidadListener{
 
                             if (valor.equals("0")){
                                 Toast.makeText(getApplicationContext(), "Rutina Creada", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Rutina.this, lista_rutinas.class);
+                                startActivity(intent);
                                 finish();
                             }
                             // Toast.makeText(getApplicationContext(), String.valueOf(names), Toast.LENGTH_LONG).show();

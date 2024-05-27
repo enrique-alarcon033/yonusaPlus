@@ -8,6 +8,7 @@ public class Constants {
     
     public static final String WI_FI_MODEL_02 = "EYON-WI02";
     public static final String WI_FI_MODEL_03 = "EYON-WI03";
+    public static final String ETHERNET_MODEL_01 = "EYON-ET01";
     public static final String LIFE_FI_MODEL= "BTVD-WI01";
     public static final String MONITOR_MODEL= "EYON-PNL01";
 

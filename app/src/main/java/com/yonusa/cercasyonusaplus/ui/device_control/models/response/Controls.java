@@ -19,6 +19,13 @@ public class Controls {
     @Expose
     private Boolean estadoPermiso;
 
+    public Boolean getEstadoFavorito() {return estadoFavorito;}
+    public void setEstadoFavorito(Boolean estadoFavorito) {this.estadoFavorito = estadoFavorito;}
+
+    @SerializedName("estadoFavorito")
+    @Expose
+    private Boolean estadoFavorito;
+
     public Integer getControlId() {
         return controlId;
     }

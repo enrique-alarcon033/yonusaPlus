@@ -103,7 +103,7 @@
     <item android:title="Desarrollo">
         <menu>
             <item
-                android:title="Versión 2.070524.35"
+                android:title="Versión 2.270524.37"
                 android:icon="@drawable/ic_bug"/>
             <item
                 android:id="@+id/nav_comentarios"

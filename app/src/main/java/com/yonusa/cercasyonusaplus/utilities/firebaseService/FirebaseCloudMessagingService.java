@@ -139,7 +139,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
             mNotificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             // Handle the case where context is null (e.g., log an error)
-            Toast.makeText(FirebaseCloudMessagingService.this, "Ocurrio un error al enviar la notificacion.", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getApplicationContext(), "Ocurrio un error al enviar la notificacion.", Toast.LENGTH_SHORT).show();
 
         }
 

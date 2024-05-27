@@ -33,7 +33,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:elevation="5dp"
-            android:src="@drawable/ic_usuario"
+            android:src="@drawable/ic_add_user"
             android:layout_alignParentEnd="true"
             android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"/>
@@ -44,7 +44,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="282dp"
             android:elevation="5dp"
             android:src="@drawable/ic_lista_user"
             android:layout_alignParentEnd="true"

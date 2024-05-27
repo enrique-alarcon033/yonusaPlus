@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yonusa.cercasyonusaplus.R;
 import com.yonusa.cercasyonusaplus.api.ApiConstants;
 import com.yonusa.cercasyonusaplus.api.ApiManager;
@@ -47,6 +49,8 @@ public class userAdministration extends AppCompatActivity {
     ImageView userAdmin;
     AlertDialog dialogo;
     List<Usuario> mUserList = new ArrayList<>();
+    FloatingActionButton add_invitado;
+    LinearLayout textoinvitados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +68,17 @@ public class userAdministration extends AppCompatActivity {
 
 
         userAdmin = findViewById(R.id.iv_user_admin);
-        userAdmin.setVisibility(View.VISIBLE);
+      //  userAdmin.setVisibility(View.VISIBLE);
+      //  userAdmin.setOnClickListener(v -> goToAddUser());
 
-        userAdmin.setOnClickListener(v -> goToAddUser());
-
+        add_invitado = (FloatingActionButton) findViewById(R.id.add_invitado);
+        add_invitado.setOnClickListener(v -> goToAddUser());
         SharedPreferences prefs = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
         userId = prefs.getString("usuarioId", "No user id definded");
 
         deviceId = getIntent().getStringExtra("DEVICE_ID");
+
+        textoinvitados = (LinearLayout) findViewById(R.id.layout_add_invitados);
 
     }
 
@@ -113,7 +120,7 @@ public class userAdministration extends AppCompatActivity {
                             buildRecyclerView(mUserList);
 
                         } else {
-
+                            textoinvitados.setVisibility(View.VISIBLE);
                             Toast.makeText(userAdministration.this, "No hay usuarios invitados", Toast.LENGTH_LONG).show();
 
                         }

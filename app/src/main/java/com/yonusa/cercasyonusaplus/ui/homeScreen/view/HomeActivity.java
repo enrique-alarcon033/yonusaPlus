@@ -141,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                 .setMessage("Obteniendo Cercos")
                 .setCancelable(false).build();
 
-        alerta.show();
+      //  alerta.show();
 
 
         iv_CloseSession = findViewById(R.id.iv_close_session);
@@ -474,7 +474,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
 
     public void toGetDevices() {
-        alerta.show();
+       // alerta.show();
         HomeScreenRequest mHomeScreenRequest = new HomeScreenRequest();
         mHomeScreenRequest.setUsuarioId(userId);
         getDevices(mHomeScreenRequest);
@@ -508,7 +508,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                         } else {
 
                             Toast.makeText(HomeActivity.this, "No hay dispositivos", Toast.LENGTH_SHORT).show();
-                            alerta.dismiss();
+                            //alerta.dismiss();
 
                         }
 
@@ -516,7 +516,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                     case (ErrorCodes.FAILURE):
                         //TODO: Agregar alertas de error.
                         Toast.makeText(HomeActivity.this, "Algo salió mal...", Toast.LENGTH_SHORT).show();
-                        alerta.dismiss();
+                      //  alerta.dismiss();
 
                         break;
 
@@ -526,7 +526,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
                      //   alerta.dismiss();
                 }
 
-            alerta.dismiss();
+           // alerta.dismiss();
             }
 
             @Override
@@ -678,12 +678,13 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         String deviceName = deviceList.get(position).getAliasCerca();
         String mac = deviceList.get(position).getMAC();
         Boolean deviceStatus = deviceList.get(position).getEstadoConexionAlSistema();
+        Boolean deviceCorriente = deviceList.get(position).getEstadoConexionCorriente();
+        Boolean statusAlarma = deviceList.get(position).getEstadoAlarma();
 
         mqttDisconnect();
 
 
         Intent deviceControlIntent = new Intent(HomeActivity.this, DeviceControlActivity.class);
-
         deviceControlIntent.putExtra("USER_ID", userId);
         deviceControlIntent.putExtra("USER_ROL", rol);
         deviceControlIntent.putExtra("MODEL_ID", model);
@@ -691,7 +692,8 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         deviceControlIntent.putExtra("DEVICE_NAME", deviceName);
         deviceControlIntent.putExtra("DEVICE_MAC", mac);
         deviceControlIntent.putExtra("DEVICE_STATUS", deviceStatus);
-
+        deviceControlIntent.putExtra("DEVICE_CORRIENTE",deviceCorriente);
+        deviceControlIntent.putExtra("STATUS_ALARMA",statusAlarma);
         startActivity(deviceControlIntent);
 
 /*
@@ -907,7 +909,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
     }
 
-    public boolean Consultar_suscripcion() throws JSONException, UnsupportedEncodingException {
+  /*  public boolean Consultar_suscripcion() throws JSONException, UnsupportedEncodingException {
         SharedPreferences misPreferencias = getSharedPreferences("Datos_usuario", Context.MODE_PRIVATE);
         String id_user = misPreferencias.getString("usuarioId", "0");
         String aplicacion = "application/json";
@@ -985,7 +987,7 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
         return false;
     }
-
+*/
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

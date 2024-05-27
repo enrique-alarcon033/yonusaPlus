@@ -21,8 +21,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/transparentWhiteColor"
-            android:layout_height="90dp">
+            android:background="@color/colorPrimary"
+            android:layout_height="70dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,9 +42,9 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:textAlignment="textEnd"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/hora_rutina"
@@ -54,9 +54,9 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:textAlignment="textStart"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="italic" />
             </LinearLayout>
 
             <TextView
@@ -65,10 +65,10 @@
                 android:layout_height="wrap_content"
                 android:text="nombre"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:textSize="18dp"
                 android:textAlignment="center"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/configuraciones" />
+                app:srcCompat="@drawable/ic_edit" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

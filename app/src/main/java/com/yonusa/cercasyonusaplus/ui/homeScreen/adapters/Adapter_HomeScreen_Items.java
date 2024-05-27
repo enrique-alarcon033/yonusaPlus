@@ -43,7 +43,8 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
 
         public TextView tv_deviceName;
         public TextView tv_deviceModel;
-        public TextView tv_deviceStatus;
+        public TextView cerca1,cerca2;
+        public TextView tv_deviceStatus,tv_status_sistema;
 
         public Context context;
 
@@ -59,6 +60,10 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
             tv_deviceName = itemView.findViewById(R.id.tv_device_name);
             tv_deviceModel = itemView.findViewById(R.id.tv_model_id);
             tv_deviceStatus = itemView.findViewById(R.id.tv_status);
+            tv_status_sistema = itemView.findViewById(R.id.tv_estatus_sistema);
+
+            cerca1 = itemView.findViewById (R.id.textView4);
+            cerca2 = itemView.findViewById(R.id.textView51);
 
             itemView.setOnClickListener(v -> goToControl(listener, this.getAdapterPosition()));
 
@@ -112,7 +117,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
         holder.tv_deviceName.setText(cerca.getAliasCerca());
 
 
-        switch (currentDeviceModel) {
+    /*    switch (currentDeviceModel) {
             case (Constants.LIFE_FI_MODEL):
                 holder.tv_deviceModel.setText(R.string.life_fi_model);
                 holder.icn_device.setImageResource(R.drawable.icn_btnvida);
@@ -129,7 +134,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                 holder.tv_deviceModel.setText(R.string.monitor_model);
                 holder.icn_device.setImageResource(R.drawable.icon_panel);
                 break;
-        }
+        } */
 
         int currentRol = cerca.getRol();
 
@@ -147,7 +152,17 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
         Boolean deviceToPowerSupply = cerca.getEstadoConexionCorriente();
         Integer deviceBatteryStatus = cerca.getEstadoBateria();
 
-        if (deviceConnected) {
+        if (cerca.getEstadoConexionAlSistema().equals(true)){
+            holder.cell_card.setBackgroundResource(R.drawable.cell_background_enable);
+            holder.icn_device.setImageResource(R.drawable.ic_wifi_on);
+            holder.tv_deviceStatus.setText("Conectado ");
+            holder.tv_status_sistema.setBackgroundResource(R.drawable.ic_sistema_on);
+
+        }else{
+            holder.cerca1.setBackgroundResource(R.drawable.fence_izq_rojo);
+            holder.cerca2.setBackgroundResource(R.drawable.fence_der_rojo);
+        }
+ /*       if (deviceConnected) {
             //Device connected
 
             holder.cell_card.setBackgroundResource(R.drawable.cell_background_enable);
@@ -157,10 +172,13 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                     holder.icn_device.setImageResource(R.drawable.icn_btnvida);
                     break;
                 case (Constants.WI_FI_MODEL_02):
-                    holder.icn_device.setImageResource(R.drawable.ic_verde);
+                    holder.icn_device.setImageResource(R.drawable.ic_rojo);
                     break;
                 case (Constants.WI_FI_MODEL_03):
-                    holder.icn_device.setImageResource(R.drawable.ic_verde);
+                    holder.icn_device.setImageResource(R.drawable.ic_rojo);
+                    break;
+                case (Constants.ETHERNET_MODEL_01):
+                    holder.icn_device.setImageResource(R.drawable.ic_rojo);
                     break;
                 case (Constants.MONITOR_MODEL):
                     holder.icn_device.setImageResource(R.drawable.icon_panel);
@@ -183,6 +201,9 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                     case (Constants.WI_FI_MODEL_03):
                         holder.tv_deviceModel.setText(R.string.wi_fi_model);
                         break;
+                    case (Constants.ETHERNET_MODEL_01):
+                        holder.icn_device.setImageResource(R.drawable.ic_verde);
+                        break;
                     case (Constants.MONITOR_MODEL):
                         holder.tv_deviceModel.setText(R.string.monitor_model);
                         break;
@@ -191,7 +212,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                 switch (deviceBatteryStatus) {
                     //Battery status
                     case 1:
-                        holder.tv_deviceStatus.setText(R.string.charging_battery);
+                      //  holder.tv_deviceStatus.setText(R.string.charging_battery);
                         break;
                     case 2:
                         holder.tv_deviceStatus.setText(R.string.device_connected);
@@ -232,7 +253,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
                         holder.tv_deviceStatus.setText(R.string.using_battery);
                         break;
                 }
-*/
+
 
             }
 
@@ -241,7 +262,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
             //Device disconnected
             holder.tv_deviceStatus.setText(R.string.device_disconnected);
 
-        }
+        }  */
 
 
     }

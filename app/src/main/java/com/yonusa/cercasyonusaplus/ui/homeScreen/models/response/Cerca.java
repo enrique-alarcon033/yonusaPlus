@@ -3,6 +3,9 @@ package com.yonusa.cercasyonusaplus.ui.homeScreen.models.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.yonusa.cercasyonusaplus.ui.device_control.models.response.Controls;
+
+import java.util.List;
 
 public class Cerca {
 
@@ -58,6 +61,18 @@ public class Cerca {
     @Expose
     private String longitud;
 
+    @SerializedName("controles")
+    private List<Controls> controls = null;
+    public List<Controls> getControls() {
+        return controls;
+    }
+    public void setControls(List<Controls> controls) {
+        this.controls = controls;
+    }
+    public Cerca withControls(List<Controls> controls) {
+        this.controls = controls;
+        return this;
+    }
     public Integer getRol() {
         return rol;
     }

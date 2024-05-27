@@ -170,7 +170,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         createNotificationChannel();
         verificarPermisos();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+  /*      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             // Check if the permission is already granted
             if (checkSelfPermission(Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
@@ -196,7 +196,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         } else {
             // Permission not available for older Android versions
             Toast.makeText(this, "La programación de alarmas exactas no es compatible con esta versión de Android", Toast.LENGTH_SHORT).show();
-        }
+        }  */
         //compruebaPermiso();
         //compruebaPermiso2();
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -268,14 +268,14 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             edtPass.setText(password);
             recordar.setEnabled(true);
             recordar.setChecked(true);
-            try {
+         /*   try {
                 loguin(edtEmail.getText().toString(),edtPass.getText().toString());
                 alerta.show();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
             //loader.setVisibility(View.VISIBLE);
 
         }

@@ -5,17 +5,24 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.yonusa.cercasyonusaplus.R;
+import com.yonusa.cercasyonusaplus.ui.device_control.view.Botones;
+import com.yonusa.cercasyonusaplus.ui.device_control.view.DeviceControlActivity;
 import com.yonusa.cercasyonusaplus.ui.rutinas.adapters.rutinas_adapter;
 import com.yonusa.cercasyonusaplus.ui.rutinas.modelo.rutinas_m;
 
@@ -43,6 +50,12 @@ public class lista_rutinas extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManagercoAcep;
     //El dataset de tipo Photo
     private ArrayList<rutinas_m> myDatasetCoAcep;
+
+    FloatingActionButton add_rutina;
+
+    LinearLayout layout_rutinas;
+    private TextView rutinas;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +65,12 @@ public class lista_rutinas extends AppCompatActivity {
         mRecyclerViewAceptadas.setHasFixedSize(true);
         mLayoutManagercoAcep = new GridLayoutManager(getApplication(), 1);
         mRecyclerViewAceptadas.setLayoutManager(mLayoutManagercoAcep);
+
+        add_rutina= (FloatingActionButton) findViewById(R.id.btn_add_rutina);
+        layout_rutinas= (LinearLayout) findViewById(R.id.layout_rutinas);
+
+        rutinas = (TextView) findViewById(R.id.textView49);
+
         try {
             obtener_rutinas();
         } catch (JSONException e) {
@@ -60,8 +79,15 @@ public class lista_rutinas extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }
+        add_rutina.setOnClickListener(v -> addRutina());
+        rutinas.setOnClickListener(v -> addRutina());
 
+    }
+    private void addRutina(){
+        Intent intent4 = new Intent(lista_rutinas.this, Rutina.class);
+        startActivity(intent4);
+        finish();
+    }
     private void refreshDataset_aceptadas () {
         if (mRecyclerViewAceptadas == null)
             return;
@@ -106,6 +132,11 @@ public class lista_rutinas extends AppCompatActivity {
                             JSONObject obj = new JSONObject(content);
 
                             JSONArray jsonArray = obj.getJSONArray("Rutinas");
+                            if (jsonArray.length()!=0){
+
+                            }else{
+                                layout_rutinas.setVisibility(View.VISIBLE);
+                            }
                             for (int i = 0; i < jsonArray.length(); i++)
                             {
                                 try {
@@ -167,10 +198,11 @@ public class lista_rutinas extends AppCompatActivity {
                                         //  texto2.setVisibility(View.VISIBLE);
                                         mRecyclerViewAceptadas.setVisibility(View.GONE);
                                         //     aceptadas_s.setVisibility(View.GONE);
+
                                     }
                                 }
                             }
-                            //  Toast.makeText(getApplicationContext(), obj.getString("listConsents"), Toast.LENGTH_LONG).show();
+                              Toast.makeText(getApplicationContext(), obj.getString("listConsents"), Toast.LENGTH_LONG).show();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {

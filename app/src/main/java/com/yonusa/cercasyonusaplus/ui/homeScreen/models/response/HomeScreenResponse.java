@@ -3,6 +3,7 @@ package com.yonusa.cercasyonusaplus.ui.homeScreen.models.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.yonusa.cercasyonusaplus.ui.device_control.models.response.Controls;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class HomeScreenResponse {
     @SerializedName("cercas")
     @Expose
     private List<Cerca> cercas = null;
+
+    private List<Controls> controls = null;
 
     public Integer getCodigo() {
         return codigo;
@@ -72,5 +75,7 @@ public class HomeScreenResponse {
         this.cercas = cercas;
         return this;
     }
+
+
 
 }
