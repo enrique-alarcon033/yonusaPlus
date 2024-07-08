@@ -46,8 +46,13 @@ public class Mqtt_CMD {
     public static final String CMD_DATE_SET = "@DATE_SET";
     public static final String CMD_DATE_ERASE = "@DATE_ERASE";
 
+    public static final String CMD_RESET_WIFI = "@WIFI_Resett";
+
 
     //ALARM On
     public static final String ALARM_ON    = "@ALARM_ON";
+
+    //RESET WIFI
+    public static final String RESET_WIFI    = "@RESET";
 
 }

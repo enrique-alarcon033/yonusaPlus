@@ -1,5 +1,7 @@
 package com.yonusa.cercasyonusaplus.ui.login.view;
 
+import static com.yonusa.cercasyonusaplus.utilities.firebaseService.PushNotificationKeys.notificationId;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -170,40 +172,18 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         createNotificationChannel();
         verificarPermisos();
 
-  /*      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            // Check if the permission is already granted
-            if (checkSelfPermission(Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
-
-                // Explain to the user why the app needs the permission
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Solicitud de permiso")
-                        .setMessage("La aplicación necesita acceso a la programación de alarmas exactas para brindarle la mejor experiencia. ¿Desea otorgar el permiso?")
-                        .setPositiveButton("Permitir", (dialog, which) -> {
-
-                            // Request the permission
-                            requestPermissions(new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, REQUEST_CODE_SCHEDULE_EXACT_ALARM);
-                        })
-                        .setNegativeButton("Cancelar", (dialog, which) -> {
-                            // Handle the case where the user denies the permission
-                            Toast.makeText(this, "No se pudo acceder a la programación de alarmas exactas", Toast.LENGTH_SHORT).show();
-                        })
-                        .show();
-            } else {
-                // Permission already granted, proceed with using the permission
-                //  scheduleExactAlarm();
-            }
-        } else {
-            // Permission not available for older Android versions
-            Toast.makeText(this, "La programación de alarmas exactas no es compatible con esta versión de Android", Toast.LENGTH_SHORT).show();
-        }  */
-        //compruebaPermiso();
-        //compruebaPermiso2();
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            SharedPreferences prefs2 = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
+            String userId = prefs2.getString("usuarioId", "No userId defined");
+            SharedPreferences prefs1 = getSharedPreferences("User_info", MODE_PRIVATE);
+            String notificationId = prefs1.getString("FCMtoken", "No notificationId defined");
+
+            String uniqueId = prefs1.getString("UniqueId: ", "No UniqueId defined");
+           String  uniqueId2 = md5(uniqueId);
             @Override
             public void onClick(View v) {
                 try {
-                    loguin(edtEmail.getText().toString(),edtPass.getText().toString());
+                    loguin(edtEmail.getText().toString(),edtPass.getText().toString(),userId,uniqueId2);
                     //loader.setVisibility(View.VISIBLE);
                     alerta.show();
                 } catch (JSONException e) {
@@ -268,27 +248,14 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             edtPass.setText(password);
             recordar.setEnabled(true);
             recordar.setChecked(true);
-         /*   try {
-                loguin(edtEmail.getText().toString(),edtPass.getText().toString());
-                alerta.show();
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }*/
-            //loader.setVisibility(View.VISIBLE);
 
         }
 
-        //SP_Helper sp_helper = new SP_Helper();
-
         //Persistencia de sesión
         try {
-
             FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
                 if (!TextUtils.isEmpty(token)) {
                     Log.d(TAG, "retrieve token successful : " + token);
-
                     SharedPreferences sharedPref2 =getSharedPreferences("User_info",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor2 = sharedPref2.edit();
                     editor2.putString("FCMtoken", token);
@@ -305,6 +272,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             SharedPreferences prefs2 = getSharedPreferences("Datos_usuario", MODE_PRIVATE);
             String userId = prefs2.getString("usuarioId", "No userId defined");
 
+
             SharedPreferences prefs1 = getSharedPreferences("User_info", MODE_PRIVATE);
             String fcm_token = prefs2.getString("FCMtoken", "NoToken");
 
@@ -315,17 +283,15 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                 sp_helper.cleanUserInfo(context);
             } else {
                 //Si existe userId guardado se registra el dispositivo para recibir notificaciones y despues se envía directo a Home screen.
-
                 String notificationId = prefs1.getString("FCMtoken", "No notificationId defined");
                 String uniqueId = prefs.getString("UniqueId: ", "No UniqueId defined");
-
                 Log.i(TAG, notificationId);
                 //String uniqueId = "TESTING-UNIQUEID080890";
                 uniqueId = md5(uniqueId);
                 Log.i(TAG, "Md5 UniqueId" + uniqueId);
                 String registrationID = prefs.getString("registrationID", "No notificationId defined");
 
-                if (!notificationId.equals("No notificationId defined")) {
+            /*    if (!notificationId.equals("No notificationId defined")) {
 
                     registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
                     //goToHomeScreen();
@@ -340,7 +306,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                     // goToHomeScreen();
                     //Toast.makeText(LogInActivity.this, "Restart your application", Toast.LENGTH_SHORT).show();
 
-                }
+                }*/
 
             }
 
@@ -443,7 +409,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
             return "";
         }
     }
-    public boolean loguin(String correo, String password) throws JSONException, UnsupportedEncodingException {
+    public boolean loguin(String correo, String password, String userId,String uniqueId) throws JSONException, UnsupportedEncodingException {
 
         SharedPreferences misPreferencias = getSharedPreferences("User_info", Context.MODE_PRIVATE);
         String aplicacion = "application/json";
@@ -515,10 +481,11 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                                     editor2.commit();
                                 }
                                 Toast.makeText(getApplicationContext(), "Bienvenido", Toast.LENGTH_LONG).show();
+                                registerUserWithDeviceToNotifications(userId, notificationId, uniqueId, Constants.HUB_NOTIFICATION_ID);
 
                                 SP_Helper sp_helper = new SP_Helper();
                                 //Persistencia de sesión
-                                try {
+                             /*   try {
 
                                     SharedPreferences prefs = getSharedPreferences(SP_Dictionary.USER_INFO, MODE_PRIVATE);
                                    // String userId = prefs.getString(SP_Dictionary.USER_ID, "No userId defined");
@@ -571,7 +538,7 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
                                     //Si algo falla en la carga del shared preference no se muestra nada y se permanece en log in.
                                     Toast.makeText(Loguin_new.this, "User id inexistente", Toast.LENGTH_SHORT).show();
 
-                                }
+                                } */
                              //   Consultar_suscripcion();
 
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
@@ -651,6 +618,8 @@ public class Loguin_new extends AppCompatActivity implements Connectable, Discon
         registerNotificationsRequest.setDispositivoId(deviceId);
         registerNotificationsRequest.setNotificacionesId(notificationsId);
         registerNotificationsRequest.setHubNotificationId(hubNotificationId);
+        registerNotificationsRequest.setPlataforma("android");
+        registerNotificationsRequest.setVersionApp("2.190624.40");
 
 
         Log.i(TAG, "NOTIFICATION ID: ------>" + registerNotificationsRequest.getNotificacionesId());

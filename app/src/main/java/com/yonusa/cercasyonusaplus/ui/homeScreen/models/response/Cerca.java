@@ -15,6 +15,12 @@ public class Cerca {
     @SerializedName("aliasCerca")
     @Expose
     private String aliasCerca;
+
+
+
+    @SerializedName("fechaRegistroDato")
+    @Expose
+    private String fechaRegistroDato;
     @SerializedName("cercaId")
     @Expose
     private String cercaId;
@@ -36,6 +42,21 @@ public class Cerca {
     @SerializedName("estadoAlarma")
     @Expose
     private Boolean estadoAlarma;
+
+
+    public Boolean getEstadoHardReset() {
+        return estadoHardReset;
+    }
+
+    public void setEstadoHardReset(Boolean estadoHardReset) {
+        this.estadoHardReset = estadoHardReset;
+    }
+
+
+
+    @SerializedName("estadoHardReset")
+    private Boolean estadoHardReset;
+
     @SerializedName("IP")
     @Expose
     private String iP;
@@ -99,6 +120,13 @@ public class Cerca {
         return this;
     }
 
+    public String getFechaRegistroDato() {
+        return fechaRegistroDato;
+    }
+
+    public void setFechaRegistroDato(String fechaRegistroDato) {
+        this.fechaRegistroDato = fechaRegistroDato;
+    }
     public String getCercaId() {
         return cercaId;
     }

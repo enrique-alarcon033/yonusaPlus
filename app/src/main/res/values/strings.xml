@@ -279,9 +279,11 @@
     <string name="title_activity_add_ethernet">add_ethernet</string>
     <string name="title_activity_agregar_ethernet">agregar_ethernet</string>
     <string name="title_activity_mi_cuenta">MiCuenta</string>
+    <string name="version">2.050724.41</string>
 
     <string name="icon_wifi">El Icono de Wifi nos indica que nuestro "Modulo Wifi" tiene una conexión estable a internet, esto nos permitirá enviar los comando al presionar algún botón.</string>
     <string name="icon_wifi_rojo">El Icono de Wifi en rojo nos indica que nuestro "Modulo Wifi" no tiene una conexión a internet, es necesario verificar a que distancia se encuentra de nuestro modem o inclusive si el modem tiene internet en el momento</string>
+   <string name="reset_wifi">Al confirmar el reset de la tarjeta wifi esta se desconectara de internet, su cerco seguirá funcionando con normalidad pero si desea controlarlo desde su app es necesario volver a configurar la tarjeta </string>
     <string name="icon_sirena">Este icono representa el estado de nuestra sirena, cuando esta en color rojo indica que nuestra sirena esta encendida ya sea por que hubo un corte o un contacto en ella.</string>
     <string name="icon_sirena_off">Si nuestro icono de sirena aparece en blanco y negro indica que no esta sonando en ese momento.</string>
     <string name="icon_menu">En este icono encontraras funciones adicionales como lo son:  *Rutinas *Botón Pulsantes *Historial *Invitados: Podrás agregar invitados a tu cerca

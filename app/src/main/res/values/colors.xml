@@ -12,6 +12,7 @@
     <color name="privacyPagecolor">#0056a4</color>
     <color name="amarillo">#FFC42D</color>
     <color name="amarillo2">#FAC84A</color>
+    <color name="reset">#8DFAC84A</color>
     <color name="rojo1">#F60000</color>
     <color name="rojo2">#FA4A4A</color>
     <color name="transparentWhiteColor">#ffffff</color>

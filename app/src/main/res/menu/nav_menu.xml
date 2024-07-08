@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:title="Historal"
+    <item android:title="Historial"
         android:id="@+id/historial"
         android:orderInCategory="100"
         app:showAsAction="never"
@@ -22,10 +22,18 @@
         android:visible="false"
         android:icon="@drawable/ic_historial"/>
 
+
     <item android:title="Botones"
         android:id="@+id/botones"
         android:orderInCategory="100"
         app:showAsAction="never"
+        android:icon="@drawable/ic_historial"/>
+
+    <item android:title="Reset Wifi"
+        android:id="@+id/wifi"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false"
         android:icon="@drawable/ic_historial"/>
 
 </menu>

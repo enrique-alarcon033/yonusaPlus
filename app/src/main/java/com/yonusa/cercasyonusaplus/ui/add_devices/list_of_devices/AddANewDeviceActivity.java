@@ -1,10 +1,16 @@
 package com.yonusa.cercasyonusaplus.ui.add_devices.list_of_devices;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -34,7 +40,7 @@ public class AddANewDeviceActivity extends AppCompatActivity {
     Button btnMonitor;
     AlertDialog dialogo;
     Context context;
-
+    AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +66,29 @@ public class AddANewDeviceActivity extends AppCompatActivity {
 
     private void toWifi() {
 
-        getDeviceConfigParameters(Constants.WI_FI_MODEL_03);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            // Location is not enabled, prompt the user to enable it
+            // ...
+            Toast.makeText(AddANewDeviceActivity.this, "Activa la ubicacion de este dispositivo para continuar", Toast.LENGTH_SHORT).show();
+        } else {
+            // Location is enabled, proceed with your location-based tasks
+            // ...
+            // Toast.makeText(AddANewDeviceActivity.this, "Activa", Toast.LENGTH_SHORT).show();
+            dialogo.show();
+            //loader.setVisibility(View.VISIBLE);
+            isNetworkAvailable(AddANewDeviceActivity.this);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //  loader.setVisibility(View.GONE);
+                }
+            }, 1000);
+            getDeviceConfigParameters(Constants.WI_FI_MODEL_03);
+        }
     }
 
     private void toEthernet(){
@@ -75,6 +102,33 @@ public class AddANewDeviceActivity extends AppCompatActivity {
 
     }
 
+    public boolean isNetworkAvailable(Context context) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i(TAG, "NetworkCapabilities.TRANSPORT_CELLULAR");
+                    //  Toast.makeText(AddANewDeviceActivity.this, "Conectado con Datos", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i(TAG, "NetworkCapabilities.TRANSPORT_WIFI");
+                    // Toast.makeText(AddANewDeviceActivity.this, "Conectado con Wifi", Toast.LENGTH_SHORT).show();
+                    return true;
+                }  else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){
+                    Log.i(TAG, "NetworkCapabilities.TRANSPORT_ETHERNET");
+                    return true;
+                }
+            }else {
+                Toast.makeText(AddANewDeviceActivity.this, "Esta función requiere internet", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return false;
+
+    }
     public void getDeviceConfigParameters(String model){
         //FIXME
         String mac = "00:00:00:00:00:00";

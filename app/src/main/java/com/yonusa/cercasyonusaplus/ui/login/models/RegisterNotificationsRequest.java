@@ -19,6 +19,11 @@ public class RegisterNotificationsRequest {
     @Expose
     private String hubNotificationId;
 
+    private String plataforma;
+
+
+    private String versionApp;
+
     public String getUsuarioId() {
         return usuarioId;
     }
@@ -49,6 +54,22 @@ public class RegisterNotificationsRequest {
 
     public void setHubNotificationId(String hubNotificationId) {
         this.hubNotificationId = hubNotificationId;
+    }
+
+    public String getPlataforma() {
+        return plataforma;
+    }
+
+    public void setPlataforma(String plataforma) {
+        this.plataforma = plataforma;
+    }
+
+    public String getVersionApp() {
+        return versionApp;
+    }
+
+    public void setVersionApp(String versionApp) {
+        this.versionApp = versionApp;
     }
 
 }
