@@ -674,12 +674,14 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
 
         String model = deviceList.get(position).getModelo();
         String deviceId = deviceList.get(position).getCercaId();
+        String fecha = deviceList.get(position).getFechaRegistroDato();
         Integer rol = deviceList.get(position).getRol();
         String deviceName = deviceList.get(position).getAliasCerca();
         String mac = deviceList.get(position).getMAC();
         Boolean deviceStatus = deviceList.get(position).getEstadoConexionAlSistema();
         Boolean deviceCorriente = deviceList.get(position).getEstadoConexionCorriente();
         Boolean statusAlarma = deviceList.get(position).getEstadoAlarma();
+        Boolean statusReset= deviceList.get(position).getEstadoHardReset();
 
         mqttDisconnect();
 
@@ -693,7 +695,9 @@ public class HomeActivity extends AppCompatActivity implements Adapter_HomeScree
         deviceControlIntent.putExtra("DEVICE_MAC", mac);
         deviceControlIntent.putExtra("DEVICE_STATUS", deviceStatus);
         deviceControlIntent.putExtra("DEVICE_CORRIENTE",deviceCorriente);
+        deviceControlIntent.putExtra("DEVICE_STATUS_RESET",statusReset);
         deviceControlIntent.putExtra("STATUS_ALARMA",statusAlarma);
+        deviceControlIntent.putExtra("FECHA",fecha);
         startActivity(deviceControlIntent);
 
 /*

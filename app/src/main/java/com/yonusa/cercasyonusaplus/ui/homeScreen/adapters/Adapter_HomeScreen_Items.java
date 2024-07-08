@@ -44,7 +44,7 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
         public TextView tv_deviceName;
         public TextView tv_deviceModel;
         public TextView cerca1,cerca2;
-        public TextView tv_deviceStatus,tv_status_sistema;
+        public TextView tv_deviceStatus,tv_status_sistema,tv_status_reset;
 
         public Context context;
 
@@ -59,9 +59,10 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
 
             tv_deviceName = itemView.findViewById(R.id.tv_device_name);
             tv_deviceModel = itemView.findViewById(R.id.tv_model_id);
+
             tv_deviceStatus = itemView.findViewById(R.id.tv_status);
             tv_status_sistema = itemView.findViewById(R.id.tv_estatus_sistema);
-
+            tv_status_reset=itemView.findViewById(R.id.tv_estado_Reset);
             cerca1 = itemView.findViewById (R.id.textView4);
             cerca2 = itemView.findViewById(R.id.textView51);
 
@@ -152,16 +153,26 @@ public class Adapter_HomeScreen_Items extends RecyclerView.Adapter<Adapter_HomeS
         Boolean deviceToPowerSupply = cerca.getEstadoConexionCorriente();
         Integer deviceBatteryStatus = cerca.getEstadoBateria();
 
-        if (cerca.getEstadoConexionAlSistema().equals(true)){
-            holder.cell_card.setBackgroundResource(R.drawable.cell_background_enable);
-            holder.icn_device.setImageResource(R.drawable.ic_wifi_on);
-            holder.tv_deviceStatus.setText("Conectado ");
-            holder.tv_status_sistema.setBackgroundResource(R.drawable.ic_sistema_on);
+       if (cerca.getEstadoHardReset().equals(true)){
+           holder.cell_card.setBackgroundResource(R.drawable.cell_background_reset);
+           holder.icn_device.setImageResource(R.drawable.ic_wifi_offi);
+           holder.tv_deviceStatus.setText("Modo Configuracion");
+           holder.tv_status_sistema.setBackgroundResource(R.drawable.ic_sistema_on);
 
-        }else{
-            holder.cerca1.setBackgroundResource(R.drawable.fence_izq_rojo);
-            holder.cerca2.setBackgroundResource(R.drawable.fence_der_rojo);
-        }
+       }else{
+           if (cerca.getEstadoConexionAlSistema().equals(true)){
+               holder.cell_card.setBackgroundResource(R.drawable.cell_background_enable);
+               holder.icn_device.setImageResource(R.drawable.ic_wifi_on);
+               holder.tv_deviceStatus.setText("Conectado ");
+               holder.tv_status_sistema.setBackgroundResource(R.drawable.ic_sistema_on);
+
+           }else{
+               holder.cerca1.setBackgroundResource(R.drawable.img_cerco_der);
+               holder.cerca2.setBackgroundResource(R.drawable.img_cerco_der1);
+           }
+       }
+
+
  /*       if (deviceConnected) {
             //Device connected
 

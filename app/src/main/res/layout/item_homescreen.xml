@@ -142,7 +142,7 @@
                 android:layout_width="31dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:background="@drawable/fence_izq"
+                android:background="@drawable/img_cerco_der_verde"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -152,7 +152,7 @@
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
-                android:background="@drawable/fence_der"
+                android:background="@drawable/img_cerco_der1_verde"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_device_name"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -167,6 +167,16 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/tv_estado_Reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_device_name" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

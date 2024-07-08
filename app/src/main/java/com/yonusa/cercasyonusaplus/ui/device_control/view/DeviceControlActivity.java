@@ -40,6 +40,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
@@ -91,8 +93,11 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
@@ -125,11 +130,11 @@ public class DeviceControlActivity extends AppCompatActivity
     private DeviceControlMainBinding binding;
     private String uuid;
     private Integer rol;
-    private String cercaId;
+    private String cercaId,fechaD;
     private String deviceName;
     private String model;
     private String mac;
-    private Boolean status, corriente, statusAlarma, isLongPress = false;
+    private Boolean status,statusReset, corriente, statusAlarma, isLongPress = false;
     private SimpleDateFormat sdfYMDTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy / MM / dd");
     private Context context;
@@ -143,7 +148,7 @@ public class DeviceControlActivity extends AppCompatActivity
     Toolbar toolbar;
 
     private Merlin merlin;
-    TextView Tv_wifi, Tv_corriente, Tv_alarma, Nombre_cerco, Tv_mac, Tv_preguntas;
+    TextView Tv_wifi, Tv_corriente, Tv_alarma, Nombre_cerco, Tv_mac, Tv_preguntas,estado_wifi,estado_alarma,Tv_der,Tv_der1,TvFecha,TvFechaActual;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -207,20 +212,35 @@ public class DeviceControlActivity extends AppCompatActivity
         deviceName = getIntent().getStringExtra("DEVICE_NAME");
         mac = getIntent().getStringExtra("DEVICE_MAC");
         status = getIntent().getBooleanExtra("DEVICE_STATUS", false);
+        statusReset=getIntent().getBooleanExtra("DEVICE_STATUS_RESET", false);
         corriente = getIntent().getBooleanExtra("DEVICE_CORRIENTE", false);
         statusAlarma = getIntent().getBooleanExtra("STATUS_ALARMA", false);
+        fechaD = getIntent().getStringExtra("FECHA");
 
+        estado_wifi = (TextView) findViewById(R.id.tv_estado_wifi);
+        estado_alarma = (TextView) findViewById(R.id.tv_estado_alarma);
         Tv_wifi = (TextView) findViewById(R.id.tv_wifi);
         Tv_corriente = (TextView) findViewById(R.id.tv_corriente);
         Tv_alarma = (TextView) findViewById(R.id.tv_alarma);
         Nombre_cerco = (TextView) findViewById(R.id.tv_nombre_cerco);
         Tv_mac = (TextView) findViewById(R.id.tv_MAC);
         Tv_preguntas = (TextView) findViewById(R.id.tv_pregunas);
+        Tv_der = (TextView) findViewById(R.id.textView53);
+        Tv_der1 = (TextView) findViewById(R.id.textView57);
+        TvFecha = (TextView) findViewById(R.id.tv_fecha_alta);
+        TvFechaActual = (TextView) findViewById(R.id.tv_fecha_Actual);
+
+        obtenerFecha();
+
+        String Dfecha = fechaD.substring(0,10);
+        TvFecha.setText(Dfecha);
 
         mRecyclerViewAceptadas2 = (RecyclerView) findViewById(R.id.lista_eventos);
         mRecyclerViewAceptadas2.setHasFixedSize(true);
         mLayoutManagercoAcep2 = new GridLayoutManager(getApplication(), 1);
         mRecyclerViewAceptadas2.setLayoutManager(mLayoutManagercoAcep2);
+
+        calcularFechas(Dfecha,TvFechaActual.getText().toString());
 
         Tv_preguntas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,14 +251,19 @@ public class DeviceControlActivity extends AppCompatActivity
 
         Nombre_cerco.setText(deviceName);
         Tv_mac.setText(mac);
+
         if (status.equals(true)) {
             Tv_wifi.setBackgroundResource(R.drawable.ic_wifi_on);
+            estado_wifi.setText("Conectado");
+            Tv_der.setBackgroundResource(R.drawable.img_cerco_der_verde);
+            Tv_der1.setBackgroundResource(R.drawable.img_cerco_der1_verde);
         }
         if (corriente.equals(true)) {
             Tv_corriente.setBackgroundResource(R.drawable.ic_sistema_on);
         }
         if (statusAlarma.equals(true)) {
             Tv_alarma.setBackgroundResource(R.drawable.ic_sirena_on);
+            estado_alarma.setText("Activada / Sonando");
         }
 
         rutinas = (TextView) findViewById(R.id.tv_rutinas);
@@ -320,6 +345,127 @@ public class DeviceControlActivity extends AppCompatActivity
         }
     }
 
+    private void obtenerFecha()
+    {
+        try
+        {
+            Calendar cal = Calendar.getInstance();
+            Date currentDate = cal.getTime();
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String date = df.format(currentDate);
+
+            TvFechaActual.setText(date);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void calcularFechas(String fecha1,String fechaActual){
+
+
+        String A1 = fecha1.substring(0,4);
+        String M1 = fecha1.substring(5,7);
+        String D1 = fecha1.substring(8,10);
+
+        int a1= Integer.parseInt(A1);
+        int m1 = Integer.parseInt(M1);
+        int d1 = Integer.parseInt(D1);
+
+        String AA1 = fechaActual.substring(0,4);
+        String MA1 = fechaActual.substring(5,7);
+        String DA1 = fechaActual.substring(8,10);
+
+        int aa1= Integer.parseInt(AA1);
+        int ma1 = Integer.parseInt(MA1);
+        int da1 = Integer.parseInt(DA1);
+
+    //    Toast.makeText(this, A1+"-"+ M1+"-"+D1, Toast.LENGTH_SHORT).show();
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(a1, m1, d1); // Fecha  de registro
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(aa1, ma1, da1); // Fecha actual
+
+// Establecer la diferencia de tiempo en milisegundos
+        long diffInMillis = calendar2.getTimeInMillis() - calendar1.getTimeInMillis();
+
+// Convertir milisegundos a días
+        int days = (int) (diffInMillis / (1000 * 60 * 60 * 24));
+
+// Imprimir la diferencia en días
+        System.out.println("Diferencia de días: " + days);
+
+        if (days > 180){
+            SharedPreferences preferencesRead = getSharedPreferences("Alert_mantenimiento", Context.MODE_PRIVATE);
+            String verificar_mac = preferencesRead.getString(mac, "0");
+            if (verificar_mac != null && verificar_mac.equals("Recordar Despues")){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("Mantenimiento Sugerido");
+                    alert.setMessage("Te recomendamos realizar un mantenimiento preventivo a tu cerco electrico ya que tiene mas de 6 meses trabajando continuamente comunicate con tu instalador");
+                    alert.setPositiveButton("Recordarmelo mas tarde", (dialog, whichButton) -> {
+                        SharedPreferences preferences = getSharedPreferences("Alert_mantenimiento", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(mac, "Recordar Despues");
+                        editor.apply();
+                    });
+
+                    alert.setNegativeButton("No volver a recordar",((dialog, which) ->
+                    {
+                        //    ArrayList<String> myArray = new ArrayList<String>(Arrays.asList("No recordar"));
+                        //   Gson gson = new Gson();
+                        //    String jsonString = gson.toJson(myArray);
+
+                        SharedPreferences preferences = getSharedPreferences("Alert_mantenimiento", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(mac, "No Recordar");
+                        editor.apply();
+// Recuperar y convertir el array de String
+
+                        String savedString = preferences.getString("Alert_mantenimiento", null);
+                        if (savedString != null) {
+                            // ArrayList<String> restoredArray = gson.fromJson(savedString, new TypeToken<ArrayList<String>>() {}.getType());
+                            // Usar el array restaurado
+                        }
+                    }));
+                    alert.show();
+            }else if (verificar_mac.equals("0")){
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Mantenimiento Sugerido");
+                alert.setMessage("Te recomendamos realizar un mantenimiento preventivo a tu cerco electrico ya que tiene mas de 6 meses trabajando continuamente comunicate con tu instalador");
+                alert.setPositiveButton("Recordarmelo mas tarde", (dialog, whichButton) -> {
+                    SharedPreferences preferences = getSharedPreferences("Alert_mantenimiento", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(mac, "Recordar Despues");
+                    editor.apply();
+                });
+
+                alert.setNegativeButton("No volver a recordar",((dialog, which) ->
+                {
+                    //    ArrayList<String> myArray = new ArrayList<String>(Arrays.asList("No recordar"));
+                    //   Gson gson = new Gson();
+                    //    String jsonString = gson.toJson(myArray);
+
+                    SharedPreferences preferences = getSharedPreferences("Alert_mantenimiento", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(mac, "No Recordar");
+                    editor.apply();
+// Recuperar y convertir el array de String
+
+                    String savedString = preferences.getString("Alert_mantenimiento", null);
+                    if (savedString != null) {
+                        // ArrayList<String> restoredArray = gson.fromJson(savedString, new TypeToken<ArrayList<String>>() {}.getType());
+                        // Usar el array restaurado
+                    }
+                }));
+                alert.show();
+            }
+        }
+        //Toast.makeText(this, String.valueOf(days), Toast.LENGTH_SHORT).show();
+    }
     public void showDialogPreguntas(Context context, String message) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -328,7 +474,7 @@ public class DeviceControlActivity extends AppCompatActivity
         View dialogLayout = inflater.inflate(R.layout.dialog_preguntas,
                 null);
 
-        @SuppressLint("MissingInflatedId") final Button btnCancelar = dialogLayout.findViewById(R.id.btn_despues);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final Button btnCancelar = dialogLayout.findViewById(R.id.btn_despues);
         //final ImageView img_rating = dialogLayout.findViewById(R.id.img_rating);
         final android.app.AlertDialog mdialog = builder.show();
         builder.setView(dialogLayout);
@@ -344,11 +490,60 @@ public class DeviceControlActivity extends AppCompatActivity
 
     }
 
+    public void showDialogResetWifi(Context context, String message) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        //builder.setTitle("Dejanos tus comentarios");
+
+        View dialogLayout = inflater.inflate(R.layout.dialog_reset_wifi,
+                null);
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final Button btnReset = dialogLayout.findViewById(R.id.btn_reset_wifi);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final EditText passActual= dialogLayout.findViewById(R.id.et_pass_actual);
+        //final ImageView img_rating = dialogLayout.findViewById(R.id.img_rating);
+        final android.app.AlertDialog mdialog = builder.show();
+        builder.setView(dialogLayout);
+        builder.show();
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = getSharedPreferences("Datos_acceso", MODE_PRIVATE);
+                String password = prefs.getString("password", "0");
+
+                String PasswordActual = passActual.getText().toString();
+
+                if (PasswordActual.equals(password)) {
+                    String msg = "";
+                    msg = Mqtt_CMD.RESET_WIFI;
+                    msg = msg.concat("|").concat(mac).concat("|").concat(uuid);
+
+                    if (msg.contains("DATE")) {
+                        String currentDay = getCurrenDateWithTime();
+                        msg = msg.concat("|").concat(getCurrenDateWithTime());
+                        Log.d(TAG, "mensaje enviado: " + msg);
+                    }
+
+                    Publisher publisher = new Publisher();
+                    publisher.SendMessage(DeviceControlActivity.this, msg, mac);
+
+                    finish();
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "Debes ingresar la contraseña Actual", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.nav_menu, menu);
         if (rol == 1) {
             menu.getItem(2).setVisible(true);
+            menu.getItem(4).setVisible(true);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -381,6 +576,12 @@ public class DeviceControlActivity extends AppCompatActivity
                 //Toast.makeText(this, "Botones", Toast.LENGTH_SHORT).show();
                 Intent intent4 = new Intent(DeviceControlActivity.this, Botones.class);
                 startActivity(intent4);
+                break;
+
+            case R.id.wifi:
+
+               showDialogResetWifi(getApplicationContext(),"");
+                //Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -773,9 +974,15 @@ public class DeviceControlActivity extends AppCompatActivity
     }
 
     public void statusCheck() {
-        if (!status) {
-            GeneralHelpers.singleMakeAlert(this, getString(R.string.conection_title), getString(R.string.conection_message).concat(" ").concat(deviceName));
+        if (status.equals(false)&&statusReset.equals(true)) {
+            GeneralHelpers.singleMakeAlert(this, "WIFI Modo configuración", "Este dispositivo se reinicio a modo de fabrica, para seguir controlando su cerco desde la app requiere configurar nuevamente una red wifi, puede hacerlo agregando nuevo dispositivo desde la opcion configurar modulo.");
+        }else{
+            if (status.equals(false)){
+                GeneralHelpers.singleMakeAlert(this, getString(R.string.conection_title), getString(R.string.conection_message).concat(" ").concat(deviceName));
+            }
+            //Conectado a intenert
         }
+
         if (rol == 1) {
             userAdm.setVisibility(View.VISIBLE);
         }
@@ -976,7 +1183,7 @@ public class DeviceControlActivity extends AppCompatActivity
                 token);
         //cambiar varible
         RequestHandle requestHandle = oHttpClient.post(getApplicationContext(),
-                "http://payonusa.com/api/ObtenerHistorialPorFecha", (HttpEntity) oEntity, "application/json", new AsyncHttpResponseHandler() {
+                "https://fntyonusa.payonusa.com/api/ObtenerHistorialPorFecha", (HttpEntity) oEntity, "application/json", new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onStart() {
